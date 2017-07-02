@@ -10,6 +10,24 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\kit">
+      <UniqueIdentifier>{b58de6e4-b23c-45d3-882b-dd4762092cb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\kit\utils">
+      <UniqueIdentifier>{09ae0e52-ca83-47d4-a95a-9d8970aebaac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\kit\2d">
+      <UniqueIdentifier>{c6828caa-9786-48d3-a780-8289f4a3a40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\kit\enums">
+      <UniqueIdentifier>{60e72ee9-16fc-4b8c-be0f-4f04053af556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\kit\actions">
+      <UniqueIdentifier>{5f2d0caf-cbfb-4965-97a9-f7144bb12053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\kit\ui">
+      <UniqueIdentifier>{8a497dd2-c29e-4757-a9c6-a84630ef51a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,6 +39,81 @@
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\myShader.cpp">
+      <Filter>src\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UIFactory.cpp">
+      <Filter>src\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AudioManager.cpp">
+      <Filter>src\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DataManager.cpp">
+      <Filter>src\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DataUtils.cpp">
+      <Filter>src\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\KeysAgent.cpp">
+      <Filter>src\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Actions.cpp">
+      <Filter>src\kit\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myActionInterval.cpp">
+      <Filter>src\kit\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myBezier.cpp">
+      <Filter>src\kit\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EasyBuild.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ChainView.cpp">
+      <Filter>src\kit\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GridView.cpp">
+      <Filter>src\kit\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\VisibleRect.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UiUtils.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myMath.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\mySlider.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PathDrawAgent.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\mySpine.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SpineFace.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SpineRect.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\c2d.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myGeometry.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myBezier-uniform-velocity.cpp">
+      <Filter>src\kit\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myStringUtils.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myColorUtils.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -31,6 +124,99 @@
     </ClInclude>
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myShader.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PublicCoco.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PublicDefine.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PublicHead.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UIFactory.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AudioManager.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataManager.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataUtils.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\KeysAgent.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Actions.h">
+      <Filter>src\kit\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myActionInterval.h">
+      <Filter>src\kit\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myBezier.h">
+      <Filter>src\kit\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EasyBuild.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ChainView.h">
+      <Filter>src\kit\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GridView.h">
+      <Filter>src\kit\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\VisibleRect.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UiUtils.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myMath.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mySlider.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PathDrawAgent.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mySpine.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SpineFace.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SpineRect.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mybyte.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2d.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myGeometry.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myBezier-uniform-velocity.h">
+      <Filter>src\kit\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Align.h">
+      <Filter>src\kit\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Direction.h">
+      <Filter>src\kit\enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myStringUtils.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\myColorUtils.h">
+      <Filter>src\kit\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
