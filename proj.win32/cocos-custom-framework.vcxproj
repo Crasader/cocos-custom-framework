@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -110,6 +110,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       <Inputs>$(TargetFileName)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
+
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
@@ -146,71 +147,16 @@ xcopy /Y /Q "$(COCOS_X_ROOT)\cocos2d-x-3.15\prebuilt\win32\*.*" "$(OutDir)"
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Classes\Actions.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\AudioManager.cpp" />
-    <ClCompile Include="..\Classes\c2d.cpp" />
-    <ClCompile Include="..\Classes\ChainView.cpp" />
-    <ClCompile Include="..\Classes\myColorUtils.cpp" />
-    <ClCompile Include="..\Classes\DataManager.cpp" />
-    <ClCompile Include="..\Classes\DataUtils.cpp" />
-    <ClCompile Include="..\Classes\EasyBuild.cpp" />
-    <ClCompile Include="..\Classes\GridView.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
-    <ClCompile Include="..\Classes\KeysAgent.cpp" />
-    <ClCompile Include="..\Classes\myActionInterval.cpp" />
-    <ClCompile Include="..\Classes\myBezier-uniform-velocity.cpp" />
-    <ClCompile Include="..\Classes\myBezier.cpp" />
-    <ClCompile Include="..\Classes\myGeometry.cpp" />
-    <ClCompile Include="..\Classes\myMath.cpp" />
-    <ClCompile Include="..\Classes\myShader.cpp" />
-    <ClCompile Include="..\Classes\mySlider.cpp" />
-    <ClCompile Include="..\Classes\mySpine.cpp" />
-    <ClCompile Include="..\Classes\PathDrawAgent.cpp" />
-    <ClCompile Include="..\Classes\SpineFace.cpp" />
-    <ClCompile Include="..\Classes\SpineRect.cpp" />
-    <ClCompile Include="..\Classes\myStringUtils.cpp" />
-    <ClCompile Include="..\Classes\UIFactory.cpp" />
-    <ClCompile Include="..\Classes\UiUtils.cpp" />
-    <ClCompile Include="..\Classes\VisibleRect.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Classes\Actions.h" />
-    <ClInclude Include="..\Classes\Align.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\AudioManager.h" />
-    <ClInclude Include="..\Classes\c2d.h" />
-    <ClInclude Include="..\Classes\ChainView.h" />
-    <ClInclude Include="..\Classes\myColorUtils.h" />
-    <ClInclude Include="..\Classes\DataManager.h" />
-    <ClInclude Include="..\Classes\DataUtils.h" />
-    <ClInclude Include="..\Classes\Direction.h" />
-    <ClInclude Include="..\Classes\EasyBuild.h" />
-    <ClInclude Include="..\Classes\GridView.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
-    <ClInclude Include="..\Classes\KeysAgent.h" />
-    <ClInclude Include="..\Classes\myActionInterval.h" />
-    <ClInclude Include="..\Classes\myBezier-uniform-velocity.h" />
-    <ClInclude Include="..\Classes\myBezier.h" />
-    <ClInclude Include="..\Classes\mybyte.h" />
-    <ClInclude Include="..\Classes\myGeometry.h" />
-    <ClInclude Include="..\Classes\myMath.h" />
-    <ClInclude Include="..\Classes\myShader.h" />
-    <ClInclude Include="..\Classes\mySlider.h" />
-    <ClInclude Include="..\Classes\mySpine.h" />
-    <ClInclude Include="..\Classes\PathDrawAgent.h" />
-    <ClInclude Include="..\Classes\PublicCoco.h" />
-    <ClInclude Include="..\Classes\PublicDefine.h" />
-    <ClInclude Include="..\Classes\PublicHead.h" />
-    <ClInclude Include="..\Classes\SpineFace.h" />
-    <ClInclude Include="..\Classes\SpineRect.h" />
-    <ClInclude Include="..\Classes\myStringUtils.h" />
-    <ClInclude Include="..\Classes\UIFactory.h" />
-    <ClInclude Include="..\Classes\UiUtils.h" />
-    <ClInclude Include="..\Classes\VisibleRect.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
+  
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
   </ItemGroup>
