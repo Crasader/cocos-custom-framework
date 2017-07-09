@@ -140,7 +140,7 @@ void ChainView::scrollToItem(ssize_t itemIndex, const Vec2& positionRatioInView,
 
 void ChainView::scrollToItem(ssize_t itemIndex, const Vec2& positionRatioInView, const Vec2& itemAnchorPoint, float timeInSec)
 {
-	onCurItemIndexChange(itemIndex);
+	//onCurItemIndexChange(itemIndex);
 	ListView::scrollToItem(itemIndex, positionRatioInView, itemAnchorPoint, timeInSec);
 }
 
@@ -151,7 +151,7 @@ void ChainView::setCurrentItemIndex(ssize_t index)
 
 void ChainView::jumpToItem(ssize_t itemIndex, const Vec2& positionRatioInView, const Vec2& itemAnchorPoint)
 {
-	onCurItemIndexChange(itemIndex);
+	//onCurItemIndexChange(itemIndex);
 	ListView::jumpToItem(itemIndex, positionRatioInView, itemAnchorPoint);
 }
 
@@ -234,16 +234,19 @@ void ChainView::update(float dt)
 		moveInnerContainer(newPosition - getInnerContainerPosition(), reachedEnd);
 	}
 	//DELOG(__FILE__, __LINE__, "_currentItemIndex %d", _currentItemIndex);
-	 
+	updateScale();
 }
 
 void ChainView::onCurItemIndexChange(int index)
 {
+	if (_checkItemIndex == index)return;
+	_checkItemIndex = index;
 	_previousPageIndex = _currentItemIndex;
 	_currentItemIndex = index;
+	_checkItem = getItem(index);
 //	DELOG(__FILE__, __LINE__, "onCurItemIndexChange _currentItemIndex -> %d", index);
 	if (_pCurItemIndexOnChangeListener){
-		_pCurItemIndexOnChangeListener(getItem(index), index);
+		_pCurItemIndexOnChangeListener(_checkItem, index);
 	}
 }
 
@@ -294,4 +297,36 @@ ssize_t ChainView::getPreviousItemIndex()
 void ChainView::setAdsorb(bool isAdsorb)
 {
 	_isAdsorb = isAdsorb;
+}
+
+void ChainView::setMinScale(float _fMinScale)
+{
+	_minScale = _fMinScale;
+}
+
+void ChainView::updateScale()
+{
+	auto positionRatioInView = Vec2::ANCHOR_MIDDLE;
+	Size contentSize = getContentSize();
+	Vec2 targetPosition = -_innerContainer->getPosition();
+	targetPosition.x += contentSize.width * positionRatioInView.x;
+	targetPosition.y += contentSize.height * positionRatioInView.y;
+
+	Vec2 centerPoint = targetPosition;
+	float checkItemScale = MIN(_minScale+0.1f,1);
+	
+	for (int i = 0; i < _items.size();i++)
+	{
+		auto item = _items.at(i);
+		auto pos = item->getPosition();
+		auto differ = fabs(centerPoint.x - pos.x);
+		auto centerRectSize = item->getContentSize().width;
+		item->setScale(1 - (differ / centerRectSize * (1 - _minScale)));
+		
+		if (item->getScale() > checkItemScale){
+			
+				onCurItemIndexChange(i);
+		
+		}
+	}
 }

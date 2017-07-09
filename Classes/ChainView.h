@@ -47,6 +47,13 @@ public:
 
 	virtual void setOnChangeCurItemIndexListener(CurItemIndexOnChangeListener rCurItemIndexOnChangeListener);
 	virtual void onCurItemIndexChange(int index);
+
+
+	virtual Widget* getCheckItem(){ return _checkItem; };
+	virtual bool isCheckItem(Widget* widget){ return _checkItem == widget; }
+	virtual void updateScale();
+	virtual void setMinScale(float _fMinScale);
+	virtual float getMinScale(){ return _minScale; }
 protected:
 protected:
 	bool _isAdsorb = false;
@@ -54,6 +61,10 @@ protected:
 	bool _doBoundItem = false;
 	ssize_t _currentItemIndex = -1;
 	ssize_t _previousPageIndex = -1;
+	float _minScale = 0.8f;
+	ssize_t _checkItemIndex = -1;
+
+	Widget* _checkItem;
 	CurItemIndexOnChangeListener _pCurItemIndexOnChangeListener = nullptr;
 };
 #endif /* defined(__ChainView_H__) */
