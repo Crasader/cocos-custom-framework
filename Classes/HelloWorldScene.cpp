@@ -1,7 +1,12 @@
 #include "HelloWorldScene.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
-
+#include "PublicDefine.h"
+#include "VisibleRect.h"
+#include "SpineRect.h"
+#include "Align.h"
+#include "myStringUtils.h"
+#include "KeysAgent.h"
 USING_NS_CC;
 
 using namespace cocostudio::timeline;
@@ -24,69 +29,43 @@ Scene* HelloWorld::createScene()
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    /**  you can create scene with following comment code instead of using csb file.
+   
     // 1. super init first
     if ( !Layer::init() )
     {
         return false;
     }
     
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+//     auto rootNode = CSLoader::createNode("MainScene.csb");
+// 
+//     addChild(rootNode);
+// 
+// 	EditBox* editor = EditBox::create(Size(234,60),"E206.png");
+// 	editor->setFont("miaowu.ttf", 25);
+// 	
+// 	editor->setPosition(VisibleRect::center());
+// 	addChild(editor);
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-    
-	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
+	auto spinf = SpineRect::create("fox.json");
+	addChild(spinf);
+	spinf->setPostion(c2d::Align::center, VisibleRect::center());
+	//spinf->setPosition( VisibleRect::center());
+	spinf->play("zou");
 
-    /////////////////////////////
-    // 3. add your codes below...
+	auto bone = spinf->findBone("bone11");
+	DELOG(__FILE__, __LINE__, "the pos -> %02f,%02f", bone->worldX, bone->worldY);
 
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    
-    // position the label on the center of the screen
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
+	auto qiqiu = Sprite::create("foxqq.png");
+	qiqiu->setAnchorPoint(Vec2(0.75,0));
+//  	spinf->addChild(qiqiu);
+//  	qiqiu->setPosition(Vec2(bone->worldX, bone->worldY));
+	spinf->addBoundNodeWithBone("bone11", qiqiu);
 
-    // add the label as a child to this layer
-    this->addChild(label, 1);
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-
-    // position the sprite on the center of the screen
-    sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
-    this->addChild(sprite, 0);
-    **/
-    
-    //////////////////////////////
-    // 1. super init first
-    if ( !Layer::init() )
-    {
-        return false;
-    }
-    
-    auto rootNode = CSLoader::createNode("MainScene.csb");
-
-    addChild(rootNode);
-
+	KeysAgent::registered(this, [=](){
+		spinf->removeBoundNode(qiqiu,false);
+	}, EventKeyboard::KeyCode::KEY_W);
     return true;
 }

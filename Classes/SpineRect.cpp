@@ -12,7 +12,24 @@ SpineRect::SpineRect()
 
 SpineRect::~SpineRect()
 {
-	
+
+	auto iter = _mapBounds.begin();
+
+	while (iter != _mapBounds.end()) //#1
+	{
+		//注意要先释放内存，在删除map元素，顺序不能颠倒。
+		//释放内存
+		auto vec = iter->second;
+		vec->clear();
+
+		delete iter->second;
+
+		iter->second = NULL;
+
+		//删除map元素
+		_mapBounds.erase(iter++); //#1
+
+	}
 }
 
 SpineRect* SpineRect::create(const std::string &rSFileName, float scale /*= 1*/)
@@ -61,6 +78,7 @@ bool SpineRect::init(const std::string &rSFileName, float scale /*= 1*/)
 
 Rect SpineRect::getBoundingBox(std::vector<spSlot*>* slots /*= nullptr*/)
 {
+	this->update(0);//需要先更新骨骼
 	std::vector<spSlot*> _ownSlots;
 	if (slots == nullptr){
 		for (int i = 0; i < _skeleton->slotsCount; ++i) {
@@ -164,4 +182,101 @@ cocos2d::Vec2 SpineRect::calculatePosition(c2d::Align alignment, const Vec2& pos
 	auto finalPos = pos - _temPoint;
 
 	return finalPos;
+}
+
+void SpineRect::addBoundNodeWithBone(const std::string &boneName, Node* node)
+{
+	auto bone = this->findBone(boneName);
+	Vector<Node*>* nodes = nullptr;
+	if (_mapBounds.find(bone) != _mapBounds.end()){
+		nodes = _mapBounds.at(bone);
+	}
+	else{
+		nodes = new Vector<Node*>();
+		_mapBounds.emplace(bone, nodes);
+	}
+	
+	nodes->pushBack(node);
+	this->addChild(node);
+
+
+}
+void SpineRect::removeBoundNode(Node* node, bool removeFromParent /*= true*/)
+{
+	for (auto item : _mapBounds)
+	{
+		auto bone = item.first;
+		auto vec = item.second;
+		for (auto it = vec->begin(); it != vec->end(); it++)
+		{
+			if (node == *it){
+				if (removeFromParent){
+					node->removeFromParent();
+				}
+				vec->eraseObject(node);
+				break;
+			}
+		}
+
+	}
+}
+
+void SpineRect::removeBoundNode(const std::string & nodeName, bool removeFromParent /*= true*/)
+{
+	for (auto item : _mapBounds)
+	{
+		auto bone = item.first;
+		auto vec = item.second;
+		for (auto it = vec->begin(); it != vec->end(); it++)
+		{
+			auto node = *it;
+			if (node->getName() == nodeName){
+				if (removeFromParent){
+					node->removeFromParent();
+				}
+				vec->eraseObject(node);
+				break;
+			}
+		}
+
+	}
+}
+
+void SpineRect::removeBoundNode(const std::string & boneName, const std::string & nodeName, bool removeFromParent /*= true*/)
+{
+	auto bone = this->findBone(boneName);
+	Vector<Node*>* nodes = nullptr;
+	if (_mapBounds.find(bone) != _mapBounds.end()){
+		nodes = _mapBounds.at(bone);
+
+		for (auto it = nodes->begin(); it != nodes->end(); it++)
+		{
+			auto node = *it;
+			if (node->getName() == nodeName){
+				if (removeFromParent){
+					node->removeFromParent();
+				}
+				nodes->eraseObject(node);
+				break;
+			}
+		}
+		
+	}
+}
+
+
+void SpineRect::update(float deltaTime)
+{
+	SpineFace::update(deltaTime);
+	for (auto item : _mapBounds)
+	{
+		auto bone = item.first;
+		auto vec = item.second;
+		for (auto it = vec->begin(); it != vec->end();it++)
+		{
+			auto node = *it;
+			node->setPosition(Vec2(bone->worldX, bone->worldY));
+		}
+
+	}
 }

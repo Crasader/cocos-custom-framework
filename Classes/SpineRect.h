@@ -26,9 +26,19 @@ public:
 	virtual void drawDebugBox(std::vector<spSlot*>* slots = nullptr);
 
 	virtual Vec2 calculatePosition(c2d::Align align, const Vec2& pos, std::vector<spSlot*>* slots = nullptr);
+
+	virtual void addBoundNodeWithBone(const std::string &boneName,Node* node);//添加节点在某个骨骼位置，并跟随 位置移动
+	virtual void removeBoundNode(Node* node,bool removeFromParent = true);//
+	virtual void removeBoundNode(const std::string & nodeName, bool removeFromParent = true);//
+	virtual void removeBoundNode(const std::string & boneName, const std::string & nodeName, bool removeFromParent = true);//
+	
+	
+	virtual void update(float deltaTime);
 protected:
 	virtual bool init(const std::string &rSFileName, float scale = 1);
 protected:
+
+	std::map<spBone*, Vector<Node*>*> _mapBounds;
 public:
 
 };
