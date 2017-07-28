@@ -10,7 +10,7 @@
 #include "AudioManager.h"
 #include "myStringUtils.h"
 #include "VisibleRect.h"  
-#include "UiUtils.h" 
+#include "UiManager.h" 
 #include "SpineFace.h"  
 #include "EasyBuild.h"
 #include "DataUtils.h"

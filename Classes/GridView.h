@@ -42,6 +42,7 @@ public:
 	virtual ssize_t get_GridView_Items_Size(){ return _gridView_items.size(); };
 
 	virtual int getCols(){ return _cols; };
+	virtual void setCols(int rIcols){ _cols = rIcols; };
 protected:
 	virtual cocos2d::Rect getGridFormLayout(int layoutIndex,int itemIndex);
 	virtual cocos2d::Rect getGrid(int index);
