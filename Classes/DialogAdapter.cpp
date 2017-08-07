@@ -1,10 +1,13 @@
 #include "DialogAdapter.h"
-static vector<std::string> _dialogStack;
+#include "VisibleRect.h"
+static vector<std::string> _vUiStrVec;
+static Vector<Layout *> _vUiVec;
 
 DialogAdapter::DialogAdapter() :
 _bIsAutoClose(false),
-_bStar(true),
+_bIsSingleton(true),
 _bIsListenBackKey(true),
+_bIsTapBackGroundClose(false),
 _pPreviousDialog(nullptr)
 {
 
@@ -49,7 +52,7 @@ DialogAdapter* DialogAdapter::create(Node* node)
 
 void DialogAdapter::initAdapter()
 {
-
+	setMaskColor();
 }
 
 Button* DialogAdapter::setCloseBtn(const std::string& path)
@@ -69,14 +72,13 @@ Button* DialogAdapter::setBtnClickCallback(const std::string& path, const ccWidg
 DialogAdapter* DialogAdapter::setMaskColor(const Color4F& color)
 {
 	Layout* _layout = this;
-	_layout->setContentSize(Director::getInstance()->getVisibleSize());
 	_layout->setBackGroundColorType(Layout::BackGroundColorType::SOLID);
 	_layout->setBackGroundColor(Color3B(color));
 	_layout->setBackGroundColorOpacity(color.a * 255);
 	_layout->setTouchEnabled(true);
 
 	_layout->addClickEventListener([=](Ref* sender){
-		if (_bIsAutoClose){
+		if (_bIsTapBackGroundClose){
 			close();
 		}
 	});
@@ -91,13 +93,13 @@ void DialogAdapter::show()
 
 void DialogAdapter::close()
 {
-	DialogHelper::CloseUI(_sSourceFileName);
+	DialogHelper::CloseUI(this);
 }
 
-void DialogAdapter::doShowAction()
+float DialogAdapter::doShowAction()
 {
 	_pSource->stopAllActions();
-	float duration = 0.2f;
+	float duration = getShowDuration();
 	_pSource->setScale(0.2f);
 	_pSource->setOpacity(0);
 	_pSource->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -105,44 +107,59 @@ void DialogAdapter::doShowAction()
 
 	this->setOpacity(0);
 	this->runAction(FadeIn::create(duration/2));
+
+	return duration;
 }
 
-void DialogAdapter::doCloseAction()
+float DialogAdapter::doCloseAction()
 {
 	_pSource->stopAllActions();
-	float duration = 0.2f;
-	_pSource->runAction(Sequence::create(Spawn::create(FadeOut::create(duration), ScaleTo::create(duration, 0.2f), nullptr), CallFunc::create([=](){
-		removeFromParent();
-	}), nullptr));
-
-
+	float duration = getCloseDuration();
+	_pSource->runAction(Sequence::create(Spawn::create(FadeOut::create(duration), ScaleTo::create(duration, 0.2f), nullptr),nullptr));
 	this->runAction(FadeOut::create(duration));
+
+	return duration;
 }
 
-void DialogAdapter::behindScene()
+float DialogAdapter::getShowDuration()
+{
+	return 0.2f;
+}
+
+float DialogAdapter::getCloseDuration()
+{
+	return 0.2f;
+}
+
+float DialogAdapter::behindScene()
 {
 	_pSource->stopAllActions();
 	float duration = 0.25f;
 	_pSource->runAction(Spawn::create(FadeOut::create(duration), ScaleTo::create(duration, 0.2f), nullptr));
+
+	return duration;
 }
 
-void DialogAdapter::recoverScene()
+float DialogAdapter::recoverScene()
 {
 	_pSource->stopAllActions();
 	float duration = 0.25f;
 	_pSource->runAction(Spawn::create(FadeIn::create(duration), ScaleTo::create(duration, 1), nullptr));
+	
+	return duration;
 }
 
-DialogAdapter* DialogAdapter::setStar(bool bStar)
+DialogAdapter* DialogAdapter::setSingleton(bool bSingleton)
 {
-	_bStar = bStar;
+	_bIsSingleton = bSingleton;
 	return this;
 }
 
-bool DialogAdapter::isStar()
+bool DialogAdapter::isSingleton()
 {
-	return _bStar;
+	return _bIsSingleton;
 }
+
 
 DialogAdapter* DialogAdapter::setListenBackKey(bool bIsListenBackKey)
 {
@@ -153,6 +170,16 @@ DialogAdapter* DialogAdapter::setListenBackKey(bool bIsListenBackKey)
 bool DialogAdapter::isListenBackKey()
 {
 	return _bIsListenBackKey;
+}
+DialogAdapter* DialogAdapter::setTapBackGroundClose(bool bTapBackGroundClose)
+{
+	_bIsTapBackGroundClose = bTapBackGroundClose;
+	return this;
+}
+
+bool DialogAdapter::isTapBackGroundClose()
+{
+	return _bIsTapBackGroundClose;
 }
 void DialogAdapter::setPreviousDialog(DialogAdapter* rPreviousDialog)
 {
@@ -166,13 +193,24 @@ DialogAdapter* DialogAdapter::getPreviousDialog()
 
 bool DialogAdapter::onKeyBack()
 {
-	close();
+	if (_bIsListenBackKey){
+		close();
+	}
 	return true;
 }
 
 DialogAdapter* DialogAdapter::setAutoClose(bool bAutoClose)
 {
-	_bIsAutoClose = bAutoClose;
+	if (_bIsAutoClose != bAutoClose){
+		_bIsAutoClose = bAutoClose;
+
+		if (_bIsAutoClose){
+			this->runAction(Sequence::create(DelayTime::create(2.5f), CallFunc::create([=](){
+				close();
+			}), nullptr));
+		}
+	}
+	
 	return this;
 }
 
@@ -181,13 +219,43 @@ bool DialogAdapter::isAutoClose()
 	return _bIsAutoClose;
 }
 
-DialogAdapter* DialogHelper::ShowUI(const std::string& filepath)
+void DialogAdapter::onShowCallback()
+{
+
+}
+
+void DialogAdapter::onCloseCallback()
+{
+
+}
+
+void DialogAdapter::onBehindSceneCallback()
+{
+
+}
+
+void DialogAdapter::onRecoverSceneCallback()
+{
+
+}
+void DialogAdapter::registerEventDispatcher()
+{
+
+}
+
+
+DialogAdapter* DialogHelper::ShowUI(const std::string& filepath, bool push/* = true*/)
 {
 
 	auto scene = Director::getInstance()->getRunningScene();
-	auto dialog = static_cast<DialogAdapter*>(scene->getChildByName(filepath));
-
-	if (dialog == nullptr){//当前界面已经显示了要显示的 dialog
+	auto existdialog = static_cast<DialogAdapter*>(scene->getChildByName(filepath));//用作判断是否存在
+	DialogAdapter* dialog = nullptr;
+	bool bCreateNewDialog = true;//是否 新建 Dialog
+	if (existdialog){
+		bCreateNewDialog = existdialog->isSingleton() == false;//如果不是单例则新建
+	}
+	if (bCreateNewDialog){//当前界面已经显示了要显示的 dialog
+		
 		dialog = static_cast<DialogAdapter*>(ObjectFactory::getInstance()->createObject(filepath));
 		if (dialog == nullptr){
 			CCLOG("UIFactory can't create the UI->%s", filepath.c_str());
@@ -195,55 +263,125 @@ DialogAdapter* DialogHelper::ShowUI(const std::string& filepath)
 		}
 		dialog->setName(filepath);
 		scene->addChild(dialog);
+		float duration = dialog->doShowAction();
+		dialog->runAction(Sequence::create(DelayTime::create(duration), CallFuncN::create([=](Node* node){//显示动作执行完之后的回调
+			auto dialogadapter = static_cast<DialogAdapter*>(node);
+			dialogadapter->onShowCallback();
+		}),nullptr));
 
-		dialog->doShowAction();
-
-		if (dialog->isStar()){
-			if (_dialogStack.empty() == false){
-				auto thelastdialogname = _dialogStack.back();
-				auto thelastdialog = static_cast<DialogAdapter*>(scene->getChildByName(filepath));
-				if (thelastdialog){
+		if (push){
+			if (_vUiVec.empty() == false){
+				auto thelastdialog = static_cast<DialogAdapter*>(_vUiVec.back());
+				if (thelastdialog && thelastdialog->isAutoClose() == false){//压入后台
 					dialog->setPreviousDialog(thelastdialog);
-					thelastdialog->behindScene();
+					float dur = thelastdialog->behindScene();
+					thelastdialog->runAction(Sequence::create(DelayTime::create(dur), CallFuncN::create([=](Node* node){
+						auto dialogadapter = static_cast<DialogAdapter*>(node);
+						dialogadapter->onBehindSceneCallback();//压入后台之后的回调
+					}), nullptr));
 				}
 			}
 		}
-
-		_dialogStack.push_back(filepath);
+		_vUiStrVec.push_back(filepath);
+		_vUiVec.pushBack(dialog);
 	}
-
-
+	else{
+		dialog = existdialog;
+	}
 	return dialog;
+}
+DialogAdapter* DialogHelper::CloseUI()
+{
+	DialogAdapter* dialog = static_cast<DialogAdapter*>(_vUiVec.back());
+	return CloseUI(dialog);
 }
 
 DialogAdapter* DialogHelper::CloseUI(const std::string& filepath)
 {
+	DialogAdapter* dialog = nullptr;
+	bool isExist = false;
 
-	auto it = find(_dialogStack.begin(), _dialogStack.end(), filepath);
-	if (it != _dialogStack.end()){
-		_dialogStack.erase(it);
+	int keyindex = _vUiStrVec.size();
+	for (int i = _vUiStrVec.size() - 1; i >= 0; i--)
+	{
+		if (_vUiStrVec.at(i) == filepath)
+		{
+			keyindex = i + 1;
+			isExist = true;
+			break;
+		}
+	}
+	_vUiVec.erase(keyindex - 1);
+	_vUiStrVec.erase(_vUiStrVec.begin() + keyindex - 1);
+
+	auto scene = Director::getInstance()->getRunningScene();
+
+	if (isExist){
+		dialog = static_cast<DialogAdapter*>(scene->getChildByName(filepath));
+		if (dialog){
+			auto rPreviousDialog = dialog->getPreviousDialog();
+			if (rPreviousDialog){//恢复到场景
+				float dur = rPreviousDialog->recoverScene();
+				rPreviousDialog->runAction(Sequence::create(DelayTime::create(dur), CallFuncN::create([=](Node* node){
+					auto dialogadapter = static_cast<DialogAdapter*>(node);
+					dialogadapter->onRecoverSceneCallback();//恢复完成之后的回调
+				}), nullptr));
+			}
+			float duration = dialog->doCloseAction();
+			dialog->runAction(Sequence::create(DelayTime::create(duration), CallFuncN::create([=](Node* node){
+				auto dialogadapter = static_cast<DialogAdapter*>(node);
+				dialogadapter->onCloseCallback();
+			}), RemoveSelf::create(), nullptr));
+		}
+	}
+	return dialog;
+}
+
+DialogAdapter* DialogHelper::CloseUI(DialogAdapter* dialog)
+{
+	bool isExist = false;
+	auto it = find(_vUiVec.begin(), _vUiVec.end(), dialog);
+	if (it != _vUiVec.end()){
+		isExist = true;
+		int keyindex = _vUiVec.size();
+		for (int i = 0; i < _vUiVec.size(); i++)
+		{
+			if (_vUiVec.at(i) == dialog)
+			{
+				keyindex = i + 1;
+				break;
+			}
+		}
+		_vUiVec.erase(keyindex - 1);
+		_vUiStrVec.erase(_vUiStrVec.begin() + keyindex - 1);
 	}
 
 
-	auto scene = Director::getInstance()->getRunningScene();
-	auto dialog = static_cast<DialogAdapter*>(scene->getChildByName(filepath));
-	if (dialog){
+	if (isExist){
 		auto rPreviousDialog = dialog->getPreviousDialog();
-		if (rPreviousDialog){
-			rPreviousDialog->recoverScene();
+		if (rPreviousDialog){//恢复到场景
+			float dur = rPreviousDialog->recoverScene();
+			rPreviousDialog->runAction(Sequence::create(DelayTime::create(dur), CallFuncN::create([=](Node* node){
+				auto dialogadapter = static_cast<DialogAdapter*>(node);
+				dialogadapter->onRecoverSceneCallback();//恢复完成之后的回调
+			}), nullptr));
 		}
-
-		dialog->doCloseAction();
+		float duration = dialog->doCloseAction();
+		dialog->runAction(Sequence::create(DelayTime::create(duration), CallFuncN::create([=](Node* node){
+			auto dialogadapter = static_cast<DialogAdapter*>(node);
+			dialogadapter->onCloseCallback();
+		}), RemoveSelf::create(), nullptr));
 	}
 	return dialog;
 }
 
 bool DialogHelper::onKeyBack()
 {
-	if (_dialogStack.empty()){
+	if (_vUiVec.empty()){
 		return false;
 	}
-	auto dialogStr = _dialogStack.back();
-	auto dialog = CloseUI(dialogStr);
+
+	auto temdialog = _vUiVec.back();
+	auto dialog = static_cast<DialogAdapter*>(temdialog);
 	return dialog->onKeyBack();
 }

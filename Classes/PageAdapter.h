@@ -14,11 +14,7 @@ public:
 	static PageAdapter* create(const std::string& filename);
 	static PageAdapter* create(Node* node);
 	virtual bool init(const std::string& filename);
-	virtual bool init(Node* node);
-	virtual DialogAdapter* showDialog(const std::string& filename);
-	virtual DialogAdapter* showDialog(DialogAdapter* dialog);
-
-		
+	virtual bool init(Node* node);		
 
 	virtual void setSourcePositionNormalized(const Vec2& pos);
 	virtual void runTimeLineAction(Action* action);
@@ -42,8 +38,6 @@ protected:
 protected:
 	Node* _pSource = nullptr;
 	std::string _sSourceFileName;
-	Vector<PageAdapter*> _dialogs;
-
 };
 
 #endif /* defined(__PAGEADAPTER_H__) */

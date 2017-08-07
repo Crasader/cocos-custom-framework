@@ -58,7 +58,7 @@ bool PageAdapter::init(const std::string& filename)
 		_sSourceFileName = filename;
 		_pSource->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		addChild(_pSource);
-		this->setContentSize(Director::getInstance()->getVisibleSize());
+		this->setContentSize(Director::getInstance()->getWinSize());
 		setSourcePositionNormalized(Vec2::ANCHOR_MIDDLE);
 		initAdapter();
 
@@ -82,7 +82,7 @@ bool PageAdapter::init(Node* node)
 		_pSource->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 		_sSourceFileName = _pSource->getName();
 		addChild(_pSource);
-		this->setContentSize(Director::getInstance()->getVisibleSize());
+		this->setContentSize(Director::getInstance()->getWinSize());
 		setSourcePositionNormalized(Vec2::ANCHOR_MIDDLE);
 		initAdapter();
 		bRet = true;
@@ -121,8 +121,6 @@ Node* PageAdapter::getChildByPath(const std::string& path)
 
 Node* PageAdapter::getSource()
 {
-	getChildByPath<Node*>("");
-	 //utils::findChild<Label*>(_pRoot, "");
 	return _pSource;
 }
 
@@ -132,29 +130,6 @@ std::string PageAdapter::getSourceName()
 	return _sSourceFileName;
 }
 
-DialogAdapter* PageAdapter::showDialog(const std::string& filename)
-{
-	for (auto dialog : _dialogs) {
-		if (dialog->getSourceName() == filename) {
-			return static_cast<DialogAdapter*>(dialog);
-		}
-	}
-	auto dialog = DialogAdapter::create(filename);
-	_dialogs.pushBack(dialog);
-
-	return dialog;
-}
-
-DialogAdapter* PageAdapter::showDialog(DialogAdapter* dialog)
-{
-// 	for (DialogAdapter dialog : dialogs) {
-// 		if (dialog.getClass().equals(dialogAdapter.getClass())) {
-// 			return dialogAdapter;
-// 		}
-// 	}
-
-	return nullptr;
-}
 
 bool PageAdapter::onKeyBack()
 {
