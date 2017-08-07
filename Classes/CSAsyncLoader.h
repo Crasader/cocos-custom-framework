@@ -51,14 +51,14 @@ public:
 	//bool load();
 	bool loadAsync(std::function<void(float)> progressCallBack);
 	bool loadNode(const std::string& classname, const flatbuffers::Table* nodeOptions);
-
+	void percentAdd();
 	bool notLoad(const std::string& classname);
 	
 protected:
 	bool init();
 	std::vector<ResPack> _allRes;
 	std::string _csBuildID;
-
+	std::function<void(float)> _funProgressCallBack;
 	int _iCurCount = 0;
 	int _iMaxCount = 0;
 };

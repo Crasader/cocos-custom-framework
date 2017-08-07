@@ -33,9 +33,6 @@ void BaseLoading::beginLoad()
 
 void BaseLoading::onLoadEnd()
 {
-	if (_bLoadEnd)return;
-
-	_bLoadEnd = true;
 	_bIsLoading = false;
 
 	_vJsonDatas.clear();
@@ -44,7 +41,6 @@ void BaseLoading::onLoadEnd()
 	_vCsbs.clear();
 	_vSpines.clear();
 	_vSounds.clear();
-
 	CCLOG("on load end~~~~~");
 }
 
@@ -69,7 +65,15 @@ void BaseLoading::loadImg()
 		});
 	}
 	for (auto plist : _vPlists){
-		pTextureCache->addImageAsync(plist, [=](Texture2D *pTexture)
+		std::string texturePath = plist;
+
+		// remove .xxx
+		size_t startPos = texturePath.find_last_of(".");
+		texturePath = texturePath.erase(startPos);
+
+		// append .png
+		texturePath = texturePath.append(".png");
+		pTextureCache->addImageAsync(texturePath, [=](Texture2D *pTexture)
 		{
 			_iImgCount++;
 			SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist, pTexture);
@@ -77,6 +81,7 @@ void BaseLoading::loadImg()
 	}
 	CSAsyncLoader::load([=](float csbPre){
 		_iImgCount++;
+		CCLOG("BaseLoading load index -> %d, total -> %d", _iImgCount, _iTotalImgSize);
 	});
 }
 
@@ -101,12 +106,11 @@ void BaseLoading::loadJsonThread(int threadID)
 		if (j >= _vJsonDatas.size())break;
 
 		std::string filename = _vJsonDatas.at(j);
-		_mutex.lock();
-		DataManager::getInstance()->readDataFromFile(filename.c_str());
-
-		onLoadJsonDataCallBack(filename);//数据加载完成的处理
-
 		
+		DataManager::getInstance()->readDataFromFileOtherThread(filename.c_str(), &_mutex);
+
+		_mutex.lock();
+		onLoadJsonDataCallBack(filename);//数据加载完成的处理
 		_iJsonDataCount++;
 		_mutex.unlock();
 	}
@@ -116,10 +120,14 @@ float BaseLoading::getVisualPercent(float realPercent)
 {
 	float delta = Director::getInstance()->getDeltaTime();
 	int iPercent = realPercent;
-	_iVisualPercent = MIN(_iVisualPercent + 35 * delta, iPercent);
+	_iVisualPercent = MIN(_iVisualPercent + 20 * delta, iPercent);
 	if (_iVisualPercent >= 100){
 		if (getJsonDataPercent() >= 100 && getImgPercent() >= 100){
-			onLoadEnd();
+			if (_bLoadEnd == false){
+				_bLoadEnd = true;
+
+				onLoadEnd();
+			}
 		}
 	}
 	return _iVisualPercent;
@@ -134,14 +142,16 @@ float BaseLoading::getPercent()
 
 float BaseLoading::getJsonDataPercent()
 {
-	if (_iJsonDataCount == 0 || _iTotalJsonDataSize == 0)return 0;
+	if (_iTotalJsonDataSize == 0)return 100;
+	if (_iJsonDataCount == 0)return 0;
 	float fJsonDataPercent = (float)_iJsonDataCount / (float)_iTotalJsonDataSize;
 	return fJsonDataPercent * 100;
 }
 
 float BaseLoading::getImgPercent()
 {
-	if (_iImgCount == 0 || _iTotalImgSize == 0)return 0;
+	if (_iTotalImgSize == 0)return 100;
+	if (_iImgCount == 0)return 0;
 	float fImgPercene = (float)_iImgCount / (float)_iTotalImgSize;
 	return fImgPercene * 100;
 }

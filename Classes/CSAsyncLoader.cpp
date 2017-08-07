@@ -256,18 +256,20 @@ bool CSAsyncLoader::loadAsync(std::function<void(float)> progressCallBack)
 {
 	_iMaxCount = 0;
 	_iCurCount = 0;
-	auto pTextureCache = TextureCache::getInstance();
+	_funProgressCallBack = progressCallBack;
+	auto pTextureCache = Director::getInstance()->getTextureCache();
+	
 	std::vector<std::string> didLoadPlist;
 	_iMaxCount = _allRes.size();
 	for (int i = 0; i < _allRes.size(); i++)
 	{
 
 		auto fileNameData = _allRes.at(i);
-
 		int resourceType = fileNameData.resType;
 		std::string path = fileNameData.path;
 		std::string errorFilePath = "";
-
+		bool errorLoad = false;
+		CCLOG("-------------------------- %s,  index->  %d", path.c_str(),i);
 		switch (resourceType)
 		{
 		case 0:
@@ -279,18 +281,12 @@ bool CSAsyncLoader::loadAsync(std::function<void(float)> progressCallBack)
 
 					  pTextureCache->addImageAsync(path, [=](Texture2D *pTexture)
 					  {
-						  _iCurCount++;
-						  float per = ((float)_iCurCount / (float)(_iMaxCount));
-						  CCLOG("Texture  per -> %.02f ,%d,  max -> %d", per, i, _allRes.size() - 1);
-						  progressCallBack(per);
-
-						  if (per >= 1){
-							  _allRes.clear();
-						  }
+						  percentAdd();
 					  });
 				  }
 				  else{
 					  errorFilePath = path;
+					  errorLoad = true;
 				  }
 				  break;
 		}
@@ -303,10 +299,8 @@ bool CSAsyncLoader::loadAsync(std::function<void(float)> progressCallBack)
 				  bool isDidLoad = find(didLoadPlist.begin(), didLoadPlist.end(), plist) != didLoadPlist.end();
 				  if (spriteFrame || isDidLoad)
 				  {
-					  _iCurCount++;
-					  float per = ((float)_iCurCount / (float)(_iMaxCount));
 					  //资源在内存中存在
-					  progressCallBack(per);
+					  percentAdd();
 				  }
 				  else
 				  {//资源在内存中不存在
@@ -335,24 +329,20 @@ bool CSAsyncLoader::loadAsync(std::function<void(float)> progressCallBack)
 							  pTextureCache->addImageAsync(texturePath, [=](Texture2D *pTexture)
 							  {
 								  SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist, pTexture);
-								  _iCurCount++;
-								  float per = ((float)_iCurCount / (float)(_iMaxCount));
-								  //CCLOG("Texture  per -> %.02f ,%d,  max -> %d", per, i, _allRes.size() - 1);
-								  progressCallBack(per);
-								  if (per >= 1){
-									  _allRes.clear();
-								  }
+								  percentAdd();
 							  });
 
 						  }
 						  else{
 							  errorFilePath = textureFileName;
+							  errorLoad = true;
 						  
 						  }
 					  }
 					  else
 					  {
 						  errorFilePath = plist;
+						  errorLoad = true;
 					  }
 				  }
 				  break;
@@ -362,12 +352,29 @@ bool CSAsyncLoader::loadAsync(std::function<void(float)> progressCallBack)
 			break;
 		}
 
-
+		if (errorLoad){
+			percentAdd();
+		}
 		if (errorFilePath != ""){
 			CCLOG("the [ %s ]res load error !!!!!!", errorFilePath.c_str());
 		}
 	}
 	return true;
+}
+
+
+void CSAsyncLoader::percentAdd()
+{
+	_iCurCount++;
+	CCLOG("load index -> %d, total -> %d", _iCurCount, _iMaxCount);
+	float per = ((float)_iCurCount / (float)(_iMaxCount));
+	//CCLOG("Texture  per -> %.02f ,%d,  max -> %d", per, i, _allRes.size() - 1);
+	if (_funProgressCallBack){
+		_funProgressCallBack(per);
+	}
+	if (per >= 1){
+		_allRes.clear();
+	}
 }
 
 

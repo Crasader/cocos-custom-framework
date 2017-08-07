@@ -16,7 +16,7 @@ public:
 	virtual bool init();
 	virtual void setDefaultModelLayout(Size size = Size::ZERO);
 	virtual void setDirection(Direction dir);
-	virtual void show();
+	virtual void show(int index = 0);
 
 	virtual void addItem(Widget* item);
 	virtual void addItem(Widget* item, ssize_t index);
@@ -41,13 +41,17 @@ public:
 	virtual void handlePressLogic(Touch *touch) override;
 
 	virtual void setAdsorb(bool isAdsorb);
-	virtual bool getAdsorb(){ return _isAdsorb; };
+	virtual bool isAdsorb(){ return _isAdsorb; };
 
 	virtual void update(float dt);
 
 	virtual void setOnChangeCurItemIndexListener(CurItemIndexOnChangeListener rCurItemIndexOnChangeListener);
-	virtual void onCurItemIndexChange(int index);
+	virtual void onCurItemIndexChange(int index, bool mandatoryRefresh = false);
 
+	virtual void removeAllChildren() override;
+
+	void  setScrollDuration(float time);
+	float getScrollDuration() const;
 
 	virtual Widget* getCheckItem(){ return _checkItem; };
 	virtual bool isCheckItem(Widget* widget){ return _checkItem == widget; }
@@ -55,10 +59,15 @@ public:
 	virtual void setMinScale(float _fMinScale);
 	virtual float getMinScale(){ return _minScale; }
 protected:
+
+	virtual float getAutoScrollStopEpsilon() const;
+	bool fltEqualZero(const Vec2& point) const;
+
 protected:
-	bool _isAdsorb = false;
+	bool _isAdsorb = false;//Îü¸½
 	bool _isTouchBegin = false;
 	bool _doBoundItem = false;
+	float _scrollTime = 0;
 	ssize_t _currentItemIndex = -1;
 	ssize_t _previousPageIndex = -1;
 	float _minScale = 0.8f;

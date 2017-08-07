@@ -1,8 +1,11 @@
 #include "ChainView.h"
 
 static const float OUT_OF_BOUNDARY_BREAKING_FACTOR = 0.05f;
+static const float DEFAULT_TIME_IN_SEC_FOR_SCROLL_TO_ITEM = 1.0f;
+
 ChainView::ChainView():
-_isAdsorb(true)
+_isAdsorb(true),
+_scrollTime(DEFAULT_TIME_IN_SEC_FOR_SCROLL_TO_ITEM)
 {
 
 }
@@ -44,6 +47,7 @@ void ChainView::addItem(Widget* item, ssize_t index)
 
 void ChainView::addItem()
 {
+	CCASSERT(_model->getContentSize().height < getContentSize().height, "the _model height can't bigger than view contentSize");	
 	pushBackDefaultItem();
 }
 
@@ -77,10 +81,10 @@ void ChainView::setDirection(Direction dir)
 	ListView::setDirection(dir);
 }
 
-void ChainView::show()
+void ChainView::show(int index/* = 0*/)
 {
 	
-	this->jumpToItem(0, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
+	this->jumpToItem(index, Vec2::ANCHOR_MIDDLE, Vec2::ANCHOR_MIDDLE);
 }
 
 void ChainView::handleReleaseLogic(Touch *touch)
@@ -151,7 +155,7 @@ void ChainView::setCurrentItemIndex(ssize_t index)
 
 void ChainView::jumpToItem(ssize_t itemIndex, const Vec2& positionRatioInView, const Vec2& itemAnchorPoint)
 {
-	//onCurItemIndexChange(itemIndex);
+	onCurItemIndexChange(itemIndex,true);
 	ListView::jumpToItem(itemIndex, positionRatioInView, itemAnchorPoint);
 }
 
@@ -228,7 +232,7 @@ void ChainView::update(float dt)
 		if (reachedEnd)
 		{
 			_autoScrolling = false;
-			dispatchEvent(SCROLLVIEW_EVENT_AUTOSCROLL_ENDED, ScrollView::EventType::AUTOSCROLL_ENDED);
+			//dispatchEvent(SCROLLVIEW_EVENT_AUTOSCROLL_ENDED, ScrollView::EventType::AUTOSCROLL_ENDED);
 		}
 
 		moveInnerContainer(newPosition - getInnerContainerPosition(), reachedEnd);
@@ -237,14 +241,26 @@ void ChainView::update(float dt)
 	updateScale();
 }
 
-void ChainView::onCurItemIndexChange(int index)
+void ChainView::onCurItemIndexChange(int index, bool mandatoryRefresh /*= false*/)
 {
-	if (_checkItemIndex == index)return;
+	if (mandatoryRefresh){
+	
+	}
+	else{
+		if (_checkItemIndex == index)return;
+	}
 	_checkItemIndex = index;
 	_previousPageIndex = _currentItemIndex;
 	_currentItemIndex = index;
 	_checkItem = getItem(index);
-//	DELOG(__FILE__, __LINE__, "onCurItemIndexChange _currentItemIndex -> %d", index);
+
+	// 	_checkItem->setLocalZOrder(1);
+	// 	auto lastitem = getItem(_previousPageIndex);
+	// 	if (lastitem){
+	// 		lastitem->setLocalZOrder(0);
+	// 	}
+
+	//	DELOG(__FILE__, __LINE__, "onCurItemIndexChange _currentItemIndex -> %d", index);
 	if (_pCurItemIndexOnChangeListener){
 		_pCurItemIndexOnChangeListener(_checkItem, index);
 	}
@@ -324,9 +340,25 @@ void ChainView::updateScale()
 		item->setScale(1 - (differ / centerRectSize * (1 - _minScale)));
 		
 		if (item->getScale() > checkItemScale){
-			
-				onCurItemIndexChange(i);
-		
+			onCurItemIndexChange(i);
 		}
 	}
+
+	
+}
+float ChainView::getAutoScrollStopEpsilon() const
+{
+	return FLT_EPSILON;
+}
+
+
+bool ChainView::fltEqualZero(const Vec2& point) const
+{
+	return (fabsf(point.x) <= 0.0001f && fabsf(point.y) <= 0.0001f);
+}
+
+void ChainView::removeAllChildren()
+{
+	ListView::removeAllChildren();
+	_currentItemIndex = -1;
 }
