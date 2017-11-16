@@ -1,4 +1,4 @@
-#include "KeysAgent.h"  
+﻿#include "KeysAgent.h"  
 #include "PublicDefine.h"
 USING_NS_CC;
 static int _count = 0;
@@ -8,7 +8,7 @@ void KeysAgent::registered(Node* node, std::function<void()> rDoKey, EventKeyboa
 // 	if (hashmap.find(rKeyCode) != hashmap.end()){
 // 		auto node = hashmap.at(rKeyCode);
 // 		auto str = "the node [" + node->getName() + "] is used this key ->"+StringUtil::Int2String((int)rKeyCode);
-// 		UiUtils::ShowWarning(str.c_str());
+// 	
 // 		return;
 // 	}
 	
@@ -29,7 +29,7 @@ bool KeysAgent::init()
 		return false;
 	}
 
-	//ע�Ჶ׽����
+	//注册捕捉监听
 	auto listenerkeyPad = EventListenerKeyboard::create();
 	listenerkeyPad->onKeyReleased = CC_CALLBACK_2(KeysAgent::onKeyReleased, this);
 	listenerkeyPad->onKeyPressed = CC_CALLBACK_2(KeysAgent::onKeyPressed, this);

@@ -1,12 +1,13 @@
-#include "BaseLoading.h"
+ï»¿#include "BaseLoading.h"
 #include "CSAsyncLoader.h"
 #include "DataManager.h"
 
-#define ThreadNum 5
+#define ThreadNum 1
 
 BaseLoading::BaseLoading():
 _bIsLoading(false),
-_bLoadEnd(false)
+_bLoadEnd(false),
+_bLoadCallbackEnd(false)
 {
 }
 
@@ -44,7 +45,12 @@ void BaseLoading::onLoadEnd()
 	CCLOG("on load end~~~~~");
 }
 
-void BaseLoading::onLoadJsonDataCallBack(const std::string& filename)
+void BaseLoading::onLoadJsonDataCallBack(const std::string& filename, int index)
+{
+
+}
+
+void BaseLoading::onLoadJsonDataEndCallBack()
 {
 
 }
@@ -56,7 +62,7 @@ void BaseLoading::loadImg()
 		CSAsyncLoader::addCsb(csb);
 	}
 	int csbImgSize = CSAsyncLoader::getResSize();
-	_iTotalImgSize = csbImgSize + _vImgs.size() + _vPlists.size();//Í¼Æ¬×ÊÔ´×ÜÊý
+	_iTotalImgSize = csbImgSize + _vImgs.size() + _vPlists.size();//å›¾ç‰‡èµ„æºæ€»æ•°
 	auto pTextureCache = Director::getInstance()->getTextureCache();
 	for (auto img : _vImgs){
 		pTextureCache->addImageAsync(img, [=](Texture2D *pTexture)
@@ -90,7 +96,7 @@ void BaseLoading::loadJsonData()
 	_iTotalJsonDataSize = _vJsonDatas.size();
 	for (int i = 0; i < ThreadNum; i++)
 	{
-		std::thread loadDataThread(&BaseLoading::loadJsonThread, this, i);//´´½¨Ò»¸ö·ÖÖ§Ïß³Ì£¬»Øµ÷µ½myThreadº¯ÊýÀï  
+		std::thread loadDataThread(&BaseLoading::loadJsonThread, this, i);//åˆ›å»ºä¸€ä¸ªåˆ†æ”¯çº¿ç¨‹ï¼Œå›žè°ƒåˆ°myThreadå‡½æ•°é‡Œ  
 		loadDataThread.detach();
 	}
 }
@@ -103,16 +109,22 @@ void BaseLoading::loadJsonThread(int threadID)
 
 	for (int j = beginId; j < endId; j++)
 	{
-		if (j >= _vJsonDatas.size())break;
+		
 
 		std::string filename = _vJsonDatas.at(j);
 		
 		DataManager::getInstance()->readDataFromFileOtherThread(filename.c_str(), &_mutex);
 
-		_mutex.lock();
-		onLoadJsonDataCallBack(filename);//Êý¾Ý¼ÓÔØÍê³ÉµÄ´¦Àí
+		//_mutex.lock();
+		onLoadJsonDataCallBack(filename,j);//æ•°æ®åŠ è½½å®Œæˆçš„å¤„ç†
 		_iJsonDataCount++;
-		_mutex.unlock();
+		//_mutex.unlock();
+
+		if (j == _vJsonDatas.size() - 1){
+			onLoadJsonDataEndCallBack();
+			_bLoadCallbackEnd = true;
+			break;
+		}
 	}
 
 }
@@ -122,10 +134,9 @@ float BaseLoading::getVisualPercent(float realPercent)
 	int iPercent = realPercent;
 	_iVisualPercent = MIN(_iVisualPercent + 20 * delta, iPercent);
 	if (_iVisualPercent >= 100){
-		if (getJsonDataPercent() >= 100 && getImgPercent() >= 100){
+		if (getJsonDataPercent() >= 100 && getImgPercent() >= 100 && _bLoadCallbackEnd){
 			if (_bLoadEnd == false){
 				_bLoadEnd = true;
-
 				onLoadEnd();
 			}
 		}

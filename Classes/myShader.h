@@ -1,4 +1,4 @@
-# ifndef __utilShader__
+﻿# ifndef __utilShader__
 # define __utilShader__
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_BLACKBERRY)
 #include <string.h>

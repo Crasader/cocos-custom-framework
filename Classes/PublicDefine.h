@@ -1,4 +1,4 @@
-#ifndef _publicDefine_h_
+ï»¿#ifndef _publicDefine_h_
 #define _publicDefine_h_
 
 
@@ -80,7 +80,7 @@ static void destroyInstance()\
 
 
 
-//Ìí¼Ó Touch ¼àÌý
+//æ·»åŠ  Touch ç›‘å¬
 #define LISTENER_TOUCH_ONE_BY_BOE(__TYPE__,needSwallow) \
 	auto listenerTouchOneByOne = EventListenerTouchOneByOne::create(); \
 	listenerTouchOneByOne->setSwallowTouches(needSwallow); \
@@ -91,7 +91,7 @@ static void destroyInstance()\
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listenerTouchOneByOne, this);
 
 
-//std::vector ÒÆ³ýÔªËØ
+//std::vector ç§»é™¤å…ƒç´ 
 #define vectorEraseObject(vec,beRemoveEle)\
 {\
 	auto it = find(vec.begin(), vec.end(), beRemoveEle); \
@@ -110,23 +110,23 @@ static void destroyInstance()\
 
 #elif COCOS2D_DEBUG == 1
 #define DELOG(file,line,s, ...) {\
-	std::string info = StringUtils::format("%s,line:%d", c2d::getFileName(file).c_str(), line); \
+	std::string info = StringUtils::format("%s,line:%d", StringUtil::getFileName(file).c_str(), line); \
 	cocos2d::log("%s -> %s", info.c_str(), cocos2d::StringUtils::format(s, ##__VA_ARGS__).c_str()); \
 }
 
 
 #elif COCOS2D_DEBUG > 1
 #define DELOG(file,line,s, ...) {\
-	std::string info = StringUtils::format("%s,line:%d", c2d::getFileName(file).c_str(), line); \
+	std::string info = StringUtils::format("%s,line:%d", StringUtil::getFileName(file).c_str(), line); \
 	cocos2d::log("%s -> %s", info.c_str(), cocos2d::StringUtils::format(s, ##__VA_ARGS__).c_str()); \
 }
 
 #endif // COCOS2D_DEBUG
 
 
-#define winSize Director::getInstance()->getWinSize()//Éè¼Æ·Ö±æÂÊ
-#define screenSize Director::getInstance()->getVisibleSize()//ÏÔÊ¾·Ö±æÂÊ
-#define machineSize Director::getInstance()->getOpenGLView()->getFrameSize()//Éè±¸·Ö±æÂÊ
+#define winSize Director::getInstance()->getWinSize()//è®¾è®¡åˆ†è¾¨çŽ‡
+#define screenSize Director::getInstance()->getVisibleSize()//æ˜¾ç¤ºåˆ†è¾¨çŽ‡
+#define machineSize Director::getInstance()->getOpenGLView()->getFrameSize()//è®¾å¤‡åˆ†è¾¨çŽ‡
 #define designSize Size(1536, 768)
 #define screenPos Vec2(Vec2(designSize - screenSize)/2)
 

@@ -1,4 +1,4 @@
-#ifndef __MYEXTENSION_H__
+ï»¿#ifndef __MYEXTENSION_H__
 #define __MYEXTENSION_H__
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
@@ -10,7 +10,7 @@
 NS_CC_BEGIN
 namespace c2d {
 
-	//Geometry ¼¸ºÎ
+	//Geometry å‡ ä½•
 	class Rectangle
 	{
 	public:

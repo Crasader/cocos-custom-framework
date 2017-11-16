@@ -1,4 +1,4 @@
-#include "ChainView.h"
+ï»¿#include "ChainView.h"
 
 static const float OUT_OF_BOUNDARY_BREAKING_FACTOR = 0.05f;
 static const float DEFAULT_TIME_IN_SEC_FOR_SCROLL_TO_ITEM = 1.0f;
@@ -216,7 +216,7 @@ void ChainView::update(float dt)
 			Vec2 moveDelta = newPosition - getInnerContainerPosition();
 			static const float MOVEDELTA_THRESHOLD = 5;
 			if (_isAdsorb){
-				if (moveDelta.length() <= MOVEDELTA_THRESHOLD){//ÒÆ¶¯µÄÁ¦¼õÐ¡µ½Ò»¶¨³Ì¶ÈÖ®ºó£¬¶Ô item ½øÐÐÊø¸¿
+				if (moveDelta.length() <= MOVEDELTA_THRESHOLD){//ç§»åŠ¨çš„åŠ›å‡å°åˆ°ä¸€å®šç¨‹åº¦ä¹‹åŽï¼Œå¯¹ item è¿›è¡ŒæŸç¼š
 					if (_doBoundItem){
 						_doBoundItem = false;
 

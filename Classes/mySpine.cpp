@@ -1,4 +1,4 @@
-
+ï»¿
 #include "mySpine.h"
 #include <spine/SkeletonRenderer.h>
 #include <spine/extension.h>
@@ -109,7 +109,7 @@ void mySpine::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, 
 
 
 
-		float slotAlpha = 1;//×Ô¶¨ÒåµÄ °¢¶û·¨ Öµ
+		float slotAlpha = 1;//è‡ªå®šä¹‰çš„ é˜¿å°”æ³• å€¼
 		float visualSlotAlpha = 1;
 		if (slotAlphas.find(slot->data->name) != slotAlphas.end()){
 			slotAlpha = slotAlphas[slot->data->name];

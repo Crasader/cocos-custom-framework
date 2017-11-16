@@ -1,17 +1,17 @@
-#ifndef _UiManager_h_
+﻿#ifndef _UiManager_h_
 #define _UiManager_h_
 
 # include "PublicCoco.h"
 
-class DialogAdapter;
+class BaseDialog;
 class UiManager
 {
 public:
 	static UiManager* shareManager();
 	bool init();
 	
-	static DialogAdapter* ShowUI(const std::string& filepath);
-	static DialogAdapter* CloseUI(const std::string& filepath);
+	static BaseDialog* ShowUI(const std::string& filepath);
+	static BaseDialog* CloseUI(const std::string& filepath);
 	static bool onKeyBack();
 
     static void LockScreen(Node* root = nullptr);

@@ -1,4 +1,4 @@
-#ifndef _Audio__Manager__
+﻿#ifndef _Audio__Manager__
 #define _Audio__Manager__
 
 #include "cocos2d.h"

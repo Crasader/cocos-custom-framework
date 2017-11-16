@@ -1,7 +1,7 @@
-
+﻿
 #include "UiManager.h"
 #include "PublicDefine.h"
-#include "DialogAdapter.h"
+#include "BaseDialog.h"
 
 static UiManager *_UiManager;
 
@@ -88,12 +88,12 @@ void UiManager::ShowTransition(Action* transition, Node* root /*= nullptr*/)
 	 return _layout;
  }
 
- DialogAdapter* UiManager::ShowUI(const std::string& filepath)
+ BaseDialog* UiManager::ShowUI(const std::string& filepath)
  {
 	return DialogHelper::ShowUI(filepath);
  }
 
- DialogAdapter* UiManager::CloseUI(const std::string& filepath)
+ BaseDialog* UiManager::CloseUI(const std::string& filepath)
  {
 
 	return DialogHelper::CloseUI(filepath);

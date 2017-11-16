@@ -1,4 +1,4 @@
-
+﻿
 #include "VisibleRect.h"
 
 USING_NS_CC;

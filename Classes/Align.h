@@ -1,4 +1,4 @@
-# ifndef __Align_H__
+﻿# ifndef __Align_H__
 # define __Align_H__
 
 #include "cocos2d.h"

@@ -1,4 +1,4 @@
-
+ï»¿
 #include "myObjectFactory.h"
 
 
@@ -118,7 +118,7 @@ namespace c2d{
 		do
 		{
 			const TInfo t = _typeMap[name];
-			if (var == nullptr){//ÎŞ²ÎÊı
+			if (var == nullptr){//æ— å‚æ•°
 				if (t._fun != nullptr)
 				{
 					o = t._fun();
@@ -128,7 +128,7 @@ namespace c2d{
 					o = t._func();
 				}
 			}
-			else//ÓĞ²ÎÊı
+			else//æœ‰å‚æ•°
 			{
 				if (t._fun_param != nullptr)
 				{

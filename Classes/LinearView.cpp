@@ -1,4 +1,4 @@
-#include "LinearView.h"
+ï»¿#include "LinearView.h"
 
 
 LinearView::LinearView()
@@ -63,7 +63,7 @@ void LinearView::setDefaultItem()
 
 void LinearView::doGridLayout()
 {
-	for (auto item : _items)//°ÑÃ»ÓÐÔªËØµÄ layout ÒÆ³ý
+	for (auto item : _items)//æŠŠæ²¡æœ‰å…ƒç´ çš„ layout ç§»é™¤
 	{
 		if (item->getChildrenCount() == 0){
 			ListView::removeChild(item);
@@ -225,7 +225,7 @@ void LinearView::checkSize(Widget* item)
 	}
 	auto gridSize = getGridSize();
 	auto showpieceSprSize = item->getContentSize();
-	//·â×°Èë ²à±ßÀ¸
+	//å°è£…å…¥ ä¾§è¾¹æ 
 	if (showpieceSprSize.width > gridSize.width*_fConstraintScale || showpieceSprSize.height > gridSize.height*_fConstraintScale){
 		auto scaleX = gridSize.width*_fConstraintScale / showpieceSprSize.width;
 		auto scaleY = gridSize.height*_fConstraintScale / showpieceSprSize.height;

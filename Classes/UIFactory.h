@@ -1,4 +1,4 @@
-#ifndef __UIFactory_H__
+﻿#ifndef __UIFactory_H__
 #define __UIFactory_H__
 
 #include "PublicDefine.h"

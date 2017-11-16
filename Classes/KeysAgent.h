@@ -1,4 +1,4 @@
-#ifndef __KeysAgent_h__  
+﻿#ifndef __KeysAgent_h__  
 #define __KeysAgent_h__  
 
 #include "cocos2d.h"    

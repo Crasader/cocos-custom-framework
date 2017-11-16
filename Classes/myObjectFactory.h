@@ -1,4 +1,4 @@
-
+﻿
 #ifndef __MYOBJECTFACTORY_H__
 #define __MYOBJECTFACTORY_H__
 

@@ -28,6 +28,7 @@ public:
 	virtual cocos2d::Value* getTableDataByName(const std::string& filename);
 	virtual const ValueMap& getConfigData();
 	virtual std::string formatStr(const string &str);
+	virtual void readDataEnd(const char *filename);
 private:
 
 	DataLoader(const DataLoader &rDataLoader) = delete;

@@ -1,4 +1,4 @@
-#include "myBezier.h"  
+﻿#include "myBezier.h"  
 
 
 // Bezier cubic formula:

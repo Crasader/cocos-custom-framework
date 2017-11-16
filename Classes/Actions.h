@@ -1,4 +1,4 @@
-# ifndef __Actions_H_
+ï»¿# ifndef __Actions_H_
 # define __Actions_H_
 
 #include "cocos2d.h"
@@ -17,18 +17,18 @@ enum ClickActionType
 class Actions
 {
 public :
-	//ÉÁË¸ repeatCount = -1 Îª forever
+	//é—ªçƒ repeatCount = -1 ä¸º forever
 	static ActionInterval* Flashing(const float delay, GLubyte opacity = 100,const int repeatCount = -1);
 
-	//ÉÏÏÂ¸¡¶¯
+	//ä¸Šä¸‹æµ®åŠ¨
 	static ActionInterval* FloatingForever(const float delay, const Vec2& distance);
 
-	//ºôÎü £¨·Å´óËõĞ¡£©
+	//å‘¼å¸ ï¼ˆæ”¾å¤§ç¼©å°ï¼‰
 	static ActionInterval* BreathingForever(const float delay, const float size);
 
 	static ActionInterval* DelayRun(const float delay, FiniteTimeAction * _CallBack);
 
-	//Ò¡Ò»Ò¡
+	//æ‘‡ä¸€æ‘‡
 	static ActionInterval * shake(float duration, float angle);
 
 	static ActionInterval * click();

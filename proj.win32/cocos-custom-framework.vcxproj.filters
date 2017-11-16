@@ -39,22 +39,10 @@
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\AudioManager.cpp">
-      <Filter>src\kit</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\DataManager.cpp">
-      <Filter>src\kit</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\DataUtils.cpp">
-      <Filter>src\kit</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Actions.cpp">
       <Filter>src\kit\actions</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\c2d.cpp">
-      <Filter>src\kit\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\EasyBuild.cpp">
       <Filter>src\kit\utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\myColorUtils.cpp">
@@ -67,12 +55,6 @@
       <Filter>src\kit\utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\myShader.cpp">
-      <Filter>src\kit\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\myStringUtils.cpp">
-      <Filter>src\kit\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\UiUtils.cpp">
       <Filter>src\kit\utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\VisibleRect.cpp">
@@ -114,6 +96,48 @@
     <ClCompile Include="..\Classes\PathDrawAgent.cpp">
       <Filter>src\kit\2d</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\SceneManager.cpp">
+      <Filter>src\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\StringUtil.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Finder.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CSAsyncLoader.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BaseLoading.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UiManager.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BaseDialog.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BasePage.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PicProcessing.cpp">
+      <Filter>src\kit\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DataLoader.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AudioManager.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DataManager.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BaseScene.cpp">
+      <Filter>src\kit\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SceneLoading.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -125,9 +149,6 @@
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\mybyte.h">
-      <Filter>src\kit</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\PublicCoco.h">
       <Filter>src\kit</Filter>
     </ClInclude>
@@ -137,15 +158,6 @@
     <ClInclude Include="..\Classes\PublicHead.h">
       <Filter>src\kit</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\AudioManager.h">
-      <Filter>src\kit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\DataManager.h">
-      <Filter>src\kit</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\DataUtils.h">
-      <Filter>src\kit</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Actions.h">
       <Filter>src\kit\actions</Filter>
     </ClInclude>
@@ -153,9 +165,6 @@
       <Filter>src\kit\enums</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\c2d.h">
-      <Filter>src\kit\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\EasyBuild.h">
       <Filter>src\kit\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\myColorUtils.h">
@@ -168,12 +177,6 @@
       <Filter>src\kit\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\myShader.h">
-      <Filter>src\kit\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\myStringUtils.h">
-      <Filter>src\kit\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\UiUtils.h">
       <Filter>src\kit\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\VisibleRect.h">
@@ -217,6 +220,54 @@
     </ClInclude>
     <ClInclude Include="..\Classes\PathDrawAgent.h">
       <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SceneType.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SceneManager.h">
+      <Filter>src\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\StringUtil.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Finder.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CSAsyncLoader.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseLoading.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UiManager.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseDialog.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BasePage.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseScene.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PicProcessing.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataLoader.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AudioManager.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\mybyte.h">
+      <Filter>src\kit\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataManager.h">
+      <Filter>src\kit\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SceneLoading.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-#ifndef __BASELOADING_H__
+﻿#ifndef __BASELOADING_H__
 #define __BASELOADING_H__
 
 #include "cocos2d.h"
@@ -21,7 +21,8 @@ public:
 
 	virtual void onLoadEnd();
 
-	virtual void onLoadJsonDataCallBack(const std::string& filename);
+	virtual void onLoadJsonDataCallBack(const std::string& filename,int index);
+	virtual void onLoadJsonDataEndCallBack();
 
 	virtual float getVisualPercent(float realPercent);// percent   Percent value from 1 to 100.
 	virtual float getPercent();// percent   Percent value from 1 to 100.
@@ -36,6 +37,7 @@ protected:
 protected:
 	bool _bLoadEnd = false;
 	bool _bIsLoading = false;
+	bool _bLoadCallbackEnd = false; // 加载资源结束 之后的 回调执行完成
 
 	std::vector<std::string> _vJsonDatas;
 	std::vector<std::string> _vImgs;

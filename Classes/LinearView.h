@@ -1,4 +1,4 @@
-#ifndef __LinearView_H__
+ï»¿#ifndef __LinearView_H__
 #define __LinearView_H__
 
 #include "PublicDefine.h"
@@ -40,7 +40,7 @@ public:
 	virtual Widget* getGridItem(ssize_t index);
 
 	virtual void setGravity(Gravity gravity);
-	virtual void setSpace(float _space);//¼ä¸ô
+	virtual void setSpace(float _space);//é—´éš”
 
 	virtual Vector<Widget*> get_LinearView_Items(){ return _LinearView_items; };
 	virtual ssize_t get_LinearView_Items_Size(){ return _LinearView_items.size(); };
@@ -51,12 +51,12 @@ public:
 	virtual void setCols(int rIcols);
 
 	/**
-	* ÉèÖÃ item ÊÇ·ñÄÜ³¬³ö gird  
+	* è®¾ç½® item æ˜¯å¦èƒ½è¶…å‡º gird  
 	*/
 	virtual void setCanBiggerThanGrid(bool bCan);;
 	virtual bool getCanBiggerThanGrid(){ return _bCanBiggerGrid; };
 	/**
-	* ÒÔ grid Îª»ù´¡£¬item Ïà¶Ô grid µÄËõ·Å´óĞ¡
+	* ä»¥ grid ä¸ºåŸºç¡€ï¼Œitem ç›¸å¯¹ grid çš„ç¼©æ”¾å¤§å°
 	*/
 	virtual void setConstraintScale(float scale){ _fConstraintScale = scale; };
 	virtual float getConstraintScale(){ return _fConstraintScale; };

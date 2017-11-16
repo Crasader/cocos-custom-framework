@@ -1,7 +1,7 @@
-#include "SpineRect.h"
+ï»¿#include "SpineRect.h"
 #include <spine/extension.h>
 #include "PublicDefine.h"
-#include "myStringUtils.h"
+#include "StringUtil.h"
 
 
 SpineRect::SpineRect()
@@ -17,8 +17,8 @@ SpineRect::~SpineRect()
 
 	while (iter != _mapBounds.end()) //#1
 	{
-		//×¢ÒâÒªÏÈÊÍ·ÅÄÚ´æ£¬ÔÚÉ¾³ımapÔªËØ£¬Ë³Ğò²»ÄÜµßµ¹¡£
-		//ÊÍ·ÅÄÚ´æ
+		//æ³¨æ„è¦å…ˆé‡Šæ”¾å†…å­˜ï¼Œåœ¨åˆ é™¤mapå…ƒç´ ï¼Œé¡ºåºä¸èƒ½é¢ å€’ã€‚
+		//é‡Šæ”¾å†…å­˜
 		auto vec = iter->second;
 		vec->clear();
 
@@ -26,7 +26,7 @@ SpineRect::~SpineRect()
 
 		iter->second = NULL;
 
-		//É¾³ımapÔªËØ
+		//åˆ é™¤mapå…ƒç´ 
 		_mapBounds.erase(iter++); //#1
 
 	}
@@ -51,8 +51,8 @@ SpineRect* SpineRect::create(const std::string &rSFileName, float scale /*= 1*/)
 SpineRect* SpineRect::createUseOwnData(const std::string &rSFileName, float scale /*= 1*/)
 {
 	SpineRect *pRet = new(std::nothrow) SpineRect();
-	auto filename = c2d::pathWithoutExtension(rSFileName);
-	bool isExist = (spSkeletonDataMap.find(filename) != spSkeletonDataMap.end());//ÅĞ¶ÏmapÀïÃæÊÇ·ñ´æÔÚ key  skeletonDataFile
+	auto filename = StringUtil::pathWithoutExtension(rSFileName);
+	bool isExist = (spSkeletonDataMap.find(filename) != spSkeletonDataMap.end());//åˆ¤æ–­mapé‡Œé¢æ˜¯å¦å­˜åœ¨ key  skeletonDataFile
 	std::string atlasFile = filename + ".atlas";
 	std::string jsonFile = filename + ".json";
 
@@ -78,7 +78,7 @@ bool SpineRect::init(const std::string &rSFileName, float scale /*= 1*/)
 
 Rect SpineRect::getBoundingBox(std::vector<spSlot*>* slots /*= nullptr*/)
 {
-	this->update(0);//ĞèÒªÏÈ¸üĞÂ¹Ç÷À
+	this->update(0);//éœ€è¦å…ˆæ›´æ–°éª¨éª¼
 	std::vector<spSlot*> _ownSlots;
 	if (slots == nullptr){
 		for (int i = 0; i < _skeleton->slotsCount; ++i) {
@@ -135,7 +135,7 @@ c2d::Rectangle SpineRect::getRectangle(Rect rBoundingBox /*= Rect::ZERO*/)
 
 void SpineRect::drawDebugBox(std::vector<spSlot*>* slots /*= nullptr*/)
 {
-	this->update(0);//ĞèÒªÏÈ¸üĞÂ¹Ç÷À
+	this->update(0);//éœ€è¦å…ˆæ›´æ–°éª¨éª¼
 	Rect rect = this->getBoundingBox(slots);
 	c2d::Rectangle rectangle = this->getRectangle(rect);
 	auto drawnode = DrawNode::create();

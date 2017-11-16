@@ -1,49 +1,31 @@
+﻿//
+//  DataManager.h
 
-#ifndef __DATAMANAGER_H__
-#define __DATAMANAGER_H__
-#include "cocos2d.h"
-#include "DataUtils.h"
-
-USING_NS_CC;
-using namespace std;
-
-class DataManager
+#ifndef __DataManager__
+#define __DataManager__
+#include "DataLoader.h"
+class DataManager :public DataLoader
 {
 public:
-	static DataManager* getInstance();
-	static void destroyInstance();
-
-
-	virtual cocos2d::ValueMap getSetData(const int &rId, const std::string &rSFileName);
-	virtual std::string getString(const int &rId, const std::string &rKey, const std::string &rSFileName);
-	virtual int getInt(const int &rId, const std::string &rKey, const std::string &rSFileName);
-	virtual double getFloat(const int &rId, const std::string &rKey, const std::string &rSFileName);
-	virtual bool hasKey(const int &rId, const std::string &rKey, const std::string &rSFileName);
-
-
-	virtual cocos2d::ValueMap getSetData(const std::string &rId, const std::string &rSFileName);
-	virtual std::string getString(const std::string &rId, const std::string &rKey, const std::string &rSFileName);
-	virtual int getInt(const std::string &rId, const std::string &rKey, const std::string &rSFileName);
-	virtual double getFloat(const std::string &rId, const std::string &rKey, const std::string &rSFileName);
-
-	virtual cocos2d::Value getValue(cocos2d::ValueMap setData, const std::string &key);
-	
-	virtual bool hasKey(const std::string &rId, const std::string &rKey, const std::string &rSFileName);
-
-	virtual bool hasKey(ValueMap map, const std::string &key);
-
-private:
-	void init();
-	static DataManager* instance;
-private:
-	
-	DataManager();
 	~DataManager();
-	DataManager(const DataManager &rDataUtil) = delete;
+	static DataManager* shareDataManager();
+	static DataManager* getInstance();
+	bool init();
 
-	DataManager &operator=(const DataManager &rDataUtil) = delete;
+	virtual void readDataEnd(const char *filename);
+	virtual cocos2d::Value getValue(const cocos2d::ValueMap& setData, int id);
+	virtual bool hasKey(const ValueMap& map, const std::string &key);
 
+	//获取指定表数据接口
+	ValueVector* getTableDataAsValueVectorByName(const std::string& filename);
+	ValueMap* getTableDataAsValueMapByName(const std::string& filename);
 
+	
+	ValueMap* getTextDescMapByKey(const std::string& key);
+
+	void initConfig();
+private:
+	
+	
 };
-
-#endif /* defined(__DATAMANAGER_H__) */
+#endif /* defined(__DataManager__) */

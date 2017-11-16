@@ -1,9 +1,55 @@
-#include "c2d.h"
+ï»¿#include "c2d.h"
 #include "VisibleRect.h"
+#include "StringUtil.h"
 NS_CC_BEGIN
 
 namespace c2d {
 
+	Node* GetChildByName(Node* root, const std::string& widgetname)
+	{
+
+		if (!root || widgetname == "")
+		{
+			return nullptr;
+		}
+		for (auto node : root->getChildren())
+		{
+			const std::string nstr = node->getName();
+			if (nstr != "" && nstr == widgetname)
+			{
+				return node;
+			}
+			auto childnode = GetChildByName(node, widgetname);
+			if (childnode)
+			{
+				return childnode;
+			}
+
+		}
+		return nullptr;
+	}
+
+	Node* GetChildByPath(Node* root, const std::string& path)
+	{
+
+		std::vector<std::string> vec = StringUtil::split(path, "/");
+
+		Node* node = nullptr;
+
+		for (auto str : vec)
+		{
+			if (node == nullptr){
+				node = root->getChildByName(str);
+				if (node == nullptr)break;
+			}
+			else{
+				node = node->getChildByName(str);
+				if (node == nullptr)break;
+			}
+		}
+
+		return node;
+	}
 	bool adaptScreen(Node * node, c2d::Align align)
 	{
 		Vec2 point = node->getPosition();
@@ -35,7 +81,7 @@ namespace c2d {
 		}
 		else if (_ResolutionPolicy == ResolutionPolicy::FIXED_HEIGHT){
 			auto _designSize = Size(1536, 768);
-			auto _screenSize = Director::getInstance()->getVisibleSize();//ÏÔÊ¾·Ö±æÂÊ
+			auto _screenSize = Director::getInstance()->getVisibleSize();//æ˜¾ç¤ºåˆ†è¾¨ç‡
 			auto _screenLeft = (_designSize - _screenSize) / 2;
 			switch (align)
 			{
@@ -72,9 +118,9 @@ namespace c2d {
 		auto _ResolutionPolicy = Director::getInstance()->getOpenGLView()->getResolutionPolicy();
 		if (_ResolutionPolicy == ResolutionPolicy::FIXED_HEIGHT){
 			auto _designSize = Size(1536, 768);
-			auto _winSize = Director::getInstance()->getWinSize();//Éè¼Æ·Ö±æÂÊ
-			auto _screenSize = Director::getInstance()->getVisibleSize();//ÏÔÊ¾·Ö±æÂÊ
-			auto _machineSize = Director::getInstance()->getOpenGLView()->getFrameSize();//Éè±¸·Ö±æÂÊ
+			auto _winSize = Director::getInstance()->getWinSize();//è®¾è®¡åˆ†è¾¨ç‡
+			auto _screenSize = Director::getInstance()->getVisibleSize();//æ˜¾ç¤ºåˆ†è¾¨ç‡
+			auto _machineSize = Director::getInstance()->getOpenGLView()->getFrameSize();//è®¾å¤‡åˆ†è¾¨ç‡
 	
 			auto pos = (_screenSize - _designSize) / 2;
 	
@@ -87,6 +133,32 @@ namespace c2d {
 		
 	
 	}
+
+	void adaptScreen(Node* root, const std::string& childPath, c2d::Align align /*= c2d::Align::center*/)
+	{
+		Node* node = GetChildByPath(root, childPath);
+		if (align == c2d::Align::center){
+			adaptScreen(node);
+		}
+		else{
+			adaptScreen(node, align);
+		}
+	}
+
+	void adaptScreenChildren(Node*root, const std::string& rootPath, c2d::Align align /*= c2d::Align::center*/)
+	{
+		Node* node = GetChildByPath(root, rootPath);
+		for (auto child : node->getChildren())
+		{
+			if (align == c2d::Align::center){
+				adaptScreen(child);
+			}
+			else{
+				adaptScreen(child, align);
+			}
+		}
+	}
+
 	void touchMove(Widget * node)
 	{
 		node->setTouchEnabled(true);
@@ -225,7 +297,7 @@ namespace c2d {
 		drawNode->drawPolygon(point, 4, Color4F(1, 0, 0, 0), 1, color);
 	}
 	
-	//ÅĞ¶ÏvectorµÄÄ³Ò»ÔªËØÊÇ·ñ´æÔÚ
+	//åˆ¤æ–­vectorçš„æŸä¸€å…ƒç´ æ˜¯å¦å­˜åœ¨
 	bool is_element_in_vector(vector<int> v, int element){
 		vector<int>::iterator it;
 		it = find(v.begin(), v.end(), element);
@@ -264,7 +336,7 @@ namespace c2d {
 	
 	int getRand(int start, int end)
 	{
-		float i = CCRANDOM_0_1()*((end + 1) - start) + start;  //²úÉúÒ»¸ö´Óstartµ½end¼äµÄËæ»úÊı  
+		float i = CCRANDOM_0_1()*((end + 1) - start) + start;  //äº§ç”Ÿä¸€ä¸ªä»startåˆ°endé—´çš„éšæœºæ•°  
 		int value = (int)i;
 	
 		if (value > end){
@@ -329,21 +401,21 @@ namespace c2d {
 		pRenderTexture->setContentSize(size);
 		pRenderTexture->setAnchorPoint(Vec2(0.f, 0.f));
 		pRenderTexture->setPosition(size / 2);
-		pRenderTexture->getSprite()->getTexture()->setAntiAliasTexParameters();//¿ªÆô¿¹¾â³İ
+		pRenderTexture->getSprite()->getTexture()->setAntiAliasTexParameters();//å¼€å¯æŠ—é”¯é½¿
 		return pRenderTexture;
 	}
 	
 	Image* createImageFromSprite(Sprite *rSprite)
 	{
-		//¼ÇÂ¼×´Ì¬
-		auto cahceAnchor = rSprite->getAnchorPoint();//¼ÇÂ¼Ãªµã
+		//è®°å½•çŠ¶æ€
+		auto cahceAnchor = rSprite->getAnchorPoint();//è®°å½•é”šç‚¹
 		auto cachePos = rSprite->getPosition();
 		auto size = rSprite->getContentSize();
-		rSprite->setAnchorPoint(Vec2(.0f, .0f));//ÉèÖÃÃªµãÎª×óÏÂ
+		rSprite->setAnchorPoint(Vec2(.0f, .0f));//è®¾ç½®é”šç‚¹ä¸ºå·¦ä¸‹
 		rSprite->setPosition(Vec2(0, 0));
-		//¼ÇÂ¼×´Ì¬ ------- end
+		//è®°å½•çŠ¶æ€ ------- end
 	
-		//¶¨ÒåÒ»¸ö½ØÍ¼¿ò´óĞ¡µÄäÖÈ¾ÎÆÀí  
+		//å®šä¹‰ä¸€ä¸ªæˆªå›¾æ¡†å¤§å°çš„æ¸²æŸ“çº¹ç†  
 		RenderTexture* pScreen = RenderTexture::create(size.width, size.height, Texture2D::PixelFormat::RGBA8888, GL_DEPTH24_STENCIL8);
 		pScreen->setPosition(Vec2(0, 0));
 		pScreen->setAnchorPoint(Point(0, 0));
@@ -353,15 +425,15 @@ namespace c2d {
 		Sprite* pTempSpr = Sprite::createWithTexture(rSprite->getTexture());
 		pTempSpr->setPosition(pTempSpr->getContentSize() / 2);
 	
-		//äÖÈ¾ÎÆÀí¿ªÊ¼²¶×½  
+		//æ¸²æŸ“çº¹ç†å¼€å§‹æ•æ‰  
 		pScreen->begin();
-		//µ±Ç°³¡¾°²ÎÓë»æÖÆ  
+		//å½“å‰åœºæ™¯å‚ä¸ç»˜åˆ¶  
 		pTempSpr->visit();
-		//½áÊø²¶×½  
+		//ç»“æŸæ•æ‰  
 		pScreen->end();
 		Director::getInstance()->getRenderer()->render();
-		//»Ö¸´×´Ì¬
-		rSprite->setAnchorPoint(cahceAnchor);//»Ö¸´Ãªµã
+		//æ¢å¤çŠ¶æ€
+		rSprite->setAnchorPoint(cahceAnchor);//æ¢å¤é”šç‚¹
 		rSprite->setPosition(cachePos);
 	
 		return pScreen->newImage(true);
@@ -375,41 +447,41 @@ namespace c2d {
 		fore->setScale(scale);
 	// 	fore->setScaleX(modelSize.width / foreSize.width);
 	// 	fore->setScaleY(modelSize.height / foreSize.height);
-		fore->setAnchorPoint(Vec2(.0f, .0f));//ÉèÖÃÃªµãÎª×óÏÂ
+		fore->setAnchorPoint(Vec2(.0f, .0f));//è®¾ç½®é”šç‚¹ä¸ºå·¦ä¸‹
 		fore->setPosition(Vec2(0, 0));
 		BlendFunc blendFunc = { GL_DST_ALPHA, GL_ONE_MINUS_SRC_ALPHA };
 		fore->setBlendFunc(blendFunc);
 	
-		//¼ÇÂ¼×´Ì¬
-		auto cahceAnchor = rModel->getAnchorPoint();//¼ÇÂ¼Ãªµã
+		//è®°å½•çŠ¶æ€
+		auto cahceAnchor = rModel->getAnchorPoint();//è®°å½•é”šç‚¹
 		auto cachePos = rModel->getPosition();
 		auto size = rModel->getContentSize();
-		rModel->setAnchorPoint(Vec2(.0f, .0f));//ÉèÖÃÃªµãÎª×óÏÂ
+		rModel->setAnchorPoint(Vec2(.0f, .0f));//è®¾ç½®é”šç‚¹ä¸ºå·¦ä¸‹
 		rModel->setPosition(Vec2(0, 0));
-		//¼ÇÂ¼×´Ì¬ ------- end
+		//è®°å½•çŠ¶æ€ ------- end
 	
-		//¶¨ÒåÒ»¸ö½ØÍ¼¿ò´óĞ¡µÄäÖÈ¾ÎÆÀí  
+		//å®šä¹‰ä¸€ä¸ªæˆªå›¾æ¡†å¤§å°çš„æ¸²æŸ“çº¹ç†  
 		RenderTexture* pScreen = RenderTexture::create(size.width, size.height, Texture2D::PixelFormat::RGBA8888, GL_DEPTH24_STENCIL8);
 		pScreen->setContentSize(size);
-		//äÖÈ¾ÎÆÀí¿ªÊ¼²¶×½  
+		//æ¸²æŸ“çº¹ç†å¼€å§‹æ•æ‰  
 		pScreen->begin();
-		//µ±Ç°³¡¾°²ÎÓë»æÖÆ  
+		//å½“å‰åœºæ™¯å‚ä¸ç»˜åˆ¶  
 		rModel->visit();
 		fore->visit();
-		//½áÊø²¶×½  
+		//ç»“æŸæ•æ‰  
 		pScreen->end();
 		pScreen->getSprite()->getTexture()->setAntiAliasTexParameters();
-		//±£´æÎªpng
+		//ä¿å­˜ä¸ºpng
 		Director::getInstance()->getRenderer()->render();
 	
-		//»Ö¸´×´Ì¬
-		rModel->setAnchorPoint(cahceAnchor);//»Ö¸´Ãªµã
+		//æ¢å¤çŠ¶æ€
+		rModel->setAnchorPoint(cahceAnchor);//æ¢å¤é”šç‚¹
 		rModel->setPosition(cachePos);
 	
 	//   	auto newSpr = Sprite::createWithTexture(pScreen->getSprite()->getTexture());
 	//   	newSpr->setFlipY(true);
 		
-		//Èç¹ûÖ±½Ó¸ø ÆäËû Sprite Ìæ»» Texture //ĞèÒªÖ´ĞĞÏÂÃæµÄº¯Êı
+		//å¦‚æœç›´æ¥ç»™ å…¶ä»– Sprite æ›¿æ¢ Texture //éœ€è¦æ‰§è¡Œä¸‹é¢çš„å‡½æ•°
 		//other->setTexture(newSpr->getTexture());
 		//other->setFlipY(true);
 		//
@@ -443,17 +515,17 @@ namespace c2d {
 		CCLOG("the pos is -> [%d,%d]", x, y);
 		auto imgWidth = (int)rImage->getWidth();
 		auto imgHight = (int)rImage->getHeight();
-		//»ñÈ¡ÏñËØÊı¾İ
+		//è·å–åƒç´ æ•°æ®
 		unsigned char* data_ = rImage->getData();
 		unsigned int *pixel = (unsigned int *)data_;
 		pixel = pixel + ((imgHight - y) * imgWidth) * 1 + x * 1;
-		//RÍ¨µÀ
+		//Ré€šé“
 		color.r = *pixel & 0xff;
-		//GÍ¨µÀ
+		//Gé€šé“
 		color.g = (*pixel >> 8) & 0xff;
-		//BÍ¨¹ı
+		//Bé€šè¿‡
 		color.b = (*pixel >> 16) & 0xff;
-		//AlphaÍ¨µÀ£¬ÎÒÃÇÓĞÓÃµÄ¾ÍÊÇAlpha
+		//Alphaé€šé“ï¼Œæˆ‘ä»¬æœ‰ç”¨çš„å°±æ˜¯Alpha
 		color.a = (*pixel >> 24) & 0xff;
 	
 		CCLOG("pos [%d,%d]the rgba -> [%d,%d,%d,%d]", color.r, color.g, color.b, color.a);
@@ -487,7 +559,7 @@ namespace c2d {
 		{
 			for (j = 0; j < height; ++j)
 			{
-				//»ñÈ¡ÏñËØÊı¾İ
+				//è·å–åƒç´ æ•°æ®
 				unsigned int *pixel = (unsigned int *)data_;
 				pixel = pixel + ((imgHight - y - 1 - j) * imgWidth) * 1 + i * 1 + x;
 	
@@ -542,7 +614,7 @@ namespace c2d {
 		{
 			for (j = 0; j < height; ++j)
 			{
-				//»ñÈ¡ÏñËØÊı¾İ
+				//è·å–åƒç´ æ•°æ®
 				unsigned int *pixel = (unsigned int *)data_;
 				pixel = pixel + ((height - j - 1) * width) * 1 + i * 1;
 	
@@ -589,25 +661,25 @@ namespace c2d {
 	
 			auto filename = nodename + ".png";
 	
-			//¼ÇÂ¼×´Ì¬
-			auto cahceAnchor = node->getAnchorPoint();//¼ÇÂ¼Ãªµã
+			//è®°å½•çŠ¶æ€
+			auto cahceAnchor = node->getAnchorPoint();//è®°å½•é”šç‚¹
 			auto cachePos = node->getPosition();
 			auto size = node->getContentSize();
-			node->setAnchorPoint(Vec2(.0f, .0f));//ÉèÖÃÃªµãÎª×óÏÂ
+			node->setAnchorPoint(Vec2(.0f, .0f));//è®¾ç½®é”šç‚¹ä¸ºå·¦ä¸‹
 			node->setPosition(Vec2(0, 0));
-			//¼ÇÂ¼×´Ì¬ ------- end
+			//è®°å½•çŠ¶æ€ ------- end
 	
-			//¶¨ÒåÒ»¸ö½ØÍ¼¿ò´óĞ¡µÄäÖÈ¾ÎÆÀí  
+			//å®šä¹‰ä¸€ä¸ªæˆªå›¾æ¡†å¤§å°çš„æ¸²æŸ“çº¹ç†  
 			RenderTexture* pScreen = RenderTexture::create(size.width, size.height, Texture2D::PixelFormat::RGBA8888, GL_DEPTH24_STENCIL8);
 			pScreen->setContentSize(size);
-			//äÖÈ¾ÎÆÀí¿ªÊ¼²¶×½  
+			//æ¸²æŸ“çº¹ç†å¼€å§‹æ•æ‰  
 			pScreen->begin();
-			//µ±Ç°³¡¾°²ÎÓë»æÖÆ  
+			//å½“å‰åœºæ™¯å‚ä¸ç»˜åˆ¶  
 			node->visit();
-			//½áÊø²¶×½  
+			//ç»“æŸæ•æ‰  
 			pScreen->end();
 			pScreen->getSprite()->getTexture()->setAntiAliasTexParameters();
-			//±£´æÎªpng
+			//ä¿å­˜ä¸ºpng
 			save = pScreen->saveToFile(filename, Image::Format::PNG, true, callback);
 			Director::getInstance()->getRenderer()->render();
 	
@@ -629,8 +701,8 @@ namespace c2d {
 			// 		data.fastSet((unsigned char*)_mybyte.data(), _mybyte.getlen());
 			// 		FileUtils::getInstance()->writeDataToFile(data, fullpath);
 	
-			//»Ö¸´×´Ì¬
-			node->setAnchorPoint(cahceAnchor);//»Ö¸´Ãªµã
+			//æ¢å¤çŠ¶æ€
+			node->setAnchorPoint(cahceAnchor);//æ¢å¤é”šç‚¹
 			node->setPosition(cachePos);
 	
 	

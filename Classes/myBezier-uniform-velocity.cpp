@@ -1,4 +1,4 @@
-#include "myBezier-uniform-velocity.h"
+ï»¿#include "myBezier-uniform-velocity.h"
 #include "PublicHead.h"
 
 // Bezier cubic formula:
@@ -13,13 +13,13 @@ static inline float bezierat(float a, float b, float c, float d, float t)
 		powf(t, 3)*d);
 }
 
-//×ø±êËÙ¶È·½³Ì  
+//åæ ‡é€Ÿåº¦æ–¹ç¨‹  
 static inline float beze_speed_at(float a, float b, float c, float d, float t)
 {
 	double it = 1 - t;
 	return -3 * a*it*it + 3 * b*it*it - 6 * b*it*t + 6 * c*it*t - 3 * c*t*t + 3 * d*t*t;
 }
-//ËÙ¶È·½³Ì  
+//é€Ÿåº¦æ–¹ç¨‹  
 static inline float beze_speed(const Point& a, const Point& b, const Point& c, const Point& d, float t)
 {
 	float sx = beze_speed_at(a.x, b.x, c.x, d.x, t);
@@ -28,15 +28,15 @@ static inline float beze_speed(const Point& a, const Point& b, const Point& c, c
 
 }
 
-//³¤¶È·½³Ì,Ê¹ÓÃSimpson»ı·ÖËã·¨  
+//é•¿åº¦æ–¹ç¨‹,ä½¿ç”¨Simpsonç§¯åˆ†ç®—æ³•  
 static inline float beze_length(const Point& a, const Point& b, const Point& c, const Point& d, float t)
 {
-	//ÔÚ×Ü³¤¶È·¶Î§ÄÚ£¬Ê¹ÓÃsimpsonËã·¨µÄ·Ö¸îÊı  
+	//åœ¨æ€»é•¿åº¦èŒƒå›´å†…ï¼Œä½¿ç”¨simpsonç®—æ³•çš„åˆ†å‰²æ•°  
 #define TOTAL_SIMPSON_STEP  (10000)  
 
-	//·Ö¸î·İÊı  
+	//åˆ†å‰²ä»½æ•°  
 	int stepCounts = (int)(TOTAL_SIMPSON_STEP*t);
-	if (stepCounts & 1) stepCounts++;    //Å¼Êı  
+	if (stepCounts & 1) stepCounts++;    //å¶æ•°  
 	if (stepCounts == 0) return 0.0;
 	int halfCounts = stepCounts / 2;
 	double sum1 = 0.0, sum2 = 0.0;
@@ -56,10 +56,10 @@ static inline float beze_length(const Point& a, const Point& b, const Point& c, 
 
 //-------------------------------------------------------------------------------------  
 
-//¸ù¾İtÍÆµ¼³öÔÈËÙÔË¶¯×Ô±äÁ¿t'µÄ·½³Ì(Ê¹ÓÃÅ£¶ÙÇĞÏß·¨)  
+//æ ¹æ®tæ¨å¯¼å‡ºåŒ€é€Ÿè¿åŠ¨è‡ªå˜é‡t'çš„æ–¹ç¨‹(ä½¿ç”¨ç‰›é¡¿åˆ‡çº¿æ³•)  
 static inline float beze_even(const Point& a, const Point& b, const Point& c, const Point& d, float t, float total_length)
 {
-	float len = t * total_length; //Èç¹û°´ÕÕÔÈËÙÔö³¤,´ËÊ±¶ÔÓ¦µÄÇúÏß³¤¶È  
+	float len = t * total_length; //å¦‚æœæŒ‰ç…§åŒ€é€Ÿå¢é•¿,æ­¤æ—¶å¯¹åº”çš„æ›²çº¿é•¿åº¦  
 	float t1 = t, t2;
 	do
 	{
@@ -129,7 +129,7 @@ void myBezierBy_uv::update(float time)
 		float yd = _config.endPosition.y;
 
 		float pre = time;
-		pre = beze_even(Point::ZERO, _config.controlPoint_1, _config.controlPoint_2, _config.endPosition, time, curve_total_length);//¼ÆËãÎªÔÈËÙ
+		pre = beze_even(Point::ZERO, _config.controlPoint_1, _config.controlPoint_2, _config.endPosition, time, curve_total_length);//è®¡ç®—ä¸ºåŒ€é€Ÿ
 
 		float x = bezierat(xa, xb, xc, xd, pre);
 		float y = bezierat(ya, yb, yc, yd, pre);

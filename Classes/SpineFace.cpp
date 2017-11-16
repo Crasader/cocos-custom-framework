@@ -1,16 +1,16 @@
-#include "SpineFace.h"
+ï»¿#include "SpineFace.h"
 #include <spine/extension.h>
 #include "PublicDefine.h"
-#include "myStringUtils.h"
+#include "StringUtil.h"
 
-//spine data ---- »º´æ
+//spine data ---- ç¼“å­˜
 std::unordered_map< std::string, spSkeletonData*> SpineFace::spSkeletonDataMap;
 
 spSkeletonData* SpineFace::create_spSkeletonData_WithFile(const std::string& skeletonDataFile, float scale /*= 1*/)
 {
 
-	auto filename = c2d::pathWithoutExtension(skeletonDataFile);
-	bool isExist = (spSkeletonDataMap.find(filename) != spSkeletonDataMap.end());//ÅĞ¶ÏmapÀïÃæÊÇ·ñ´æÔÚ key  skeletonDataFile
+	auto filename = StringUtil::pathWithoutExtension(skeletonDataFile);
+	bool isExist = (spSkeletonDataMap.find(filename) != spSkeletonDataMap.end());//åˆ¤æ–­mapé‡Œé¢æ˜¯å¦å­˜åœ¨ key  skeletonDataFile
 	std::string atlasFile = filename + ".atlas";
 	std::string jsonFile = filename + ".json";
 
@@ -34,7 +34,7 @@ spSkeletonData* SpineFace::create_spSkeletonData_WithFile(const std::string& ske
 		spSkeletonJson_dispose(json);
 	}
 	return skeletonData;
-}//spine data ---- »º´æ
+}//spine data ---- ç¼“å­˜
 
 
 SpineFace::SpineFace()
@@ -69,8 +69,8 @@ SpineFace* SpineFace::create(const std::string &rSFileName, float scale /*= 1*/)
 SpineFace* SpineFace::createUseOwnData(const std::string &rSFileName, float scale /*= 1*/)
 {
 	SpineFace *pRet = new(std::nothrow) SpineFace();
-	auto filename = c2d::pathWithoutExtension(rSFileName);
-	bool isExist = (spSkeletonDataMap.find(filename) != spSkeletonDataMap.end());//ÅĞ¶ÏmapÀïÃæÊÇ·ñ´æÔÚ key  skeletonDataFile
+	auto filename = StringUtil::pathWithoutExtension(rSFileName);
+	bool isExist = (spSkeletonDataMap.find(filename) != spSkeletonDataMap.end());//åˆ¤æ–­mapé‡Œé¢æ˜¯å¦å­˜åœ¨ key  skeletonDataFile
 	std::string atlasFile = filename + ".atlas";
 	std::string jsonFile = filename + ".json";
 
@@ -111,7 +111,7 @@ bool SpineFace::initData(const std::string &rSFileName)
 		_mRepeatTimes.clear();
 		setCascadeColorEnabled(true);
 		setCascadeOpacityEnabled(true);
-		auto name = c2d::nameWithoutExtension(rSFileName);
+		auto name = StringUtil::nameWithoutExtension(rSFileName);
 		setName(name);
 		_sSpineStr = rSFileName;
 
@@ -251,7 +251,7 @@ std::string SpineFace::getRandomAnim()
 
 	auto name = _sPlayKey;
 
-	while (name == _sPlayKey && size > 1)//²»ÈÃËæ»úµ½¸úµ±Ç°²¥·ÅµÄ¶¯»­Ò»ÑùµÄ¶¯»­
+	while (name == _sPlayKey && size > 1)//ä¸è®©éšæœºåˆ°è·Ÿå½“å‰æ’­æ”¾çš„åŠ¨ç”»ä¸€æ ·çš„åŠ¨ç”»
 	{
 		int index = random(0,(int) size - 1);
 		name = temp.at(index);

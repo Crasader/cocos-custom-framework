@@ -1,4 +1,4 @@
-#include "mySlider.h"
+﻿#include "mySlider.h"
 
 Scale9Sprite* mySlider::getProgressBarRenderer()
 {

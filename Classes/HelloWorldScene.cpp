@@ -1,11 +1,11 @@
-#include "HelloWorldScene.h"
+﻿#include "HelloWorldScene.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 #include "PublicDefine.h"
 #include "VisibleRect.h"
 #include "SpineRect.h"
 #include "Align.h"
-#include "myStringUtils.h"
+#include "StringUtil.h"
 #include "KeysAgent.h"
 USING_NS_CC;
 

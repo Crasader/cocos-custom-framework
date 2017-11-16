@@ -1,4 +1,4 @@
-#include "Actions.h"
+ï»¿#include "Actions.h"
 
 ActionInterval* Actions::Flashing(const float delay, GLubyte opacity, const int repeatCount/* = -1*/)
 {
@@ -98,21 +98,21 @@ ActionInterval * Actions::RotateForever(const float delay)
 
 ActionInterval * Actions::Parabola(float t, const Point& startPoint, const Point& endPoint, float height /*= 0*/, float angle /*= 60*/)
 {
-	// °Ñ½Ç¶È×ª»»Îª»¡¶È  
+	// æŠŠè§’åº¦è½¬æ¢ä¸ºå¼§åº¦  
 	float radian = angle*M_PI / 180.0;
-	// µÚÒ»¸ö¿ØÖÆµãÎªÅ×ÎïÏß×ó°ë»¡µÄÖĞµã  
+	// ç¬¬ä¸€ä¸ªæ§åˆ¶ç‚¹ä¸ºæŠ›ç‰©çº¿å·¦åŠå¼§çš„ä¸­ç‚¹  
 	float q1x = startPoint.x + (endPoint.x - startPoint.x) / 4.0;
 	Point q1 = Point(q1x, height + startPoint.y + cos(radian)*q1x);
-	// µÚ¶ş¸ö¿ØÖÆµãÎªÕû¸öÅ×ÎïÏßµÄÖĞµã  
+	// ç¬¬äºŒä¸ªæ§åˆ¶ç‚¹ä¸ºæ•´ä¸ªæŠ›ç‰©çº¿çš„ä¸­ç‚¹  
 	float q2x = startPoint.x + (endPoint.x - startPoint.x) / 2.0;
 	Point q2 = Point(q2x, height + startPoint.y + cos(radian)*q2x);
 
-	//ÇúÏßÅäÖÃ  
+	//æ›²çº¿é…ç½®  
 	ccBezierConfig cfg;
 	cfg.controlPoint_1 = q1;
 	cfg.controlPoint_2 = q2;
 	cfg.endPosition = endPoint;
-	//Ê¹ÓÃCCEaseInOutÈÃÇúÏßÔË¶¯ÓĞÒ»¸öÓÉÂıµ½¿ìµÄ±ä»¯£¬ÏÔµÃ¸ü×ÔÈ»  
+	//ä½¿ç”¨CCEaseInOutè®©æ›²çº¿è¿åŠ¨æœ‰ä¸€ä¸ªç”±æ…¢åˆ°å¿«çš„å˜åŒ–ï¼Œæ˜¾å¾—æ›´è‡ªç„¶  
 	return EaseInOut::create(BezierTo::create(t, cfg), 1);
 }
 

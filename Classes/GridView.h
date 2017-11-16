@@ -1,4 +1,4 @@
-#ifndef __GridView_H__
+ï»¿#ifndef __GridView_H__
 #define __GridView_H__
 
 #include "PublicDefine.h"
@@ -36,7 +36,7 @@ public:
 	virtual Widget* getGridItem(ssize_t index);
 
 	virtual void setGravity(Gravity gravity);
-	virtual void setSpace(float x,float y);//¼ä¸ô
+	virtual void setSpace(float x,float y);//é—´éš”
 
 	virtual Vector<Widget*> get_GridView_Items(){ return _gridView_items; };
 	virtual ssize_t get_GridView_Items_Size(){ return _gridView_items.size(); };

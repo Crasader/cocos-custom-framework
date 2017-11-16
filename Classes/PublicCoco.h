@@ -1,4 +1,4 @@
-
+﻿
 #ifndef _PublicCoco_h_
 #define _PublicCoco_h_
 #include "cocos2d.h"

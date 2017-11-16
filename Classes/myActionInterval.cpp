@@ -1,4 +1,4 @@
-#include "myActionInterval.h"
+ï»¿#include "myActionInterval.h"
 
 
 
@@ -488,7 +488,7 @@ void LabelTimeCounter::setValue(int value)
 }
 
 
-//CircleAction Ô²ĞÎÔË¶¯
+//CircleAction åœ†å½¢è¿åŠ¨
 CircleAction* CircleAction::create(float t, Point center, float radius, float rStartRadians/* = 0*/)
 {
 	CircleAction *pc = new CircleAction();
@@ -537,7 +537,7 @@ void CircleAction::update(float time)
 	}
 }
 
-//EllipseBy  ÍÖÔ²
+//EllipseBy  æ¤­åœ†
 Point getEllipsePos(float a, float b, float angle, float t)
 {
 	float x = a*cos(2 * M_PI*t);
@@ -597,16 +597,16 @@ void EllipseBy::update(float time)
 
 
 		//
-		Point s_startPosition = _centerPosition;//ÖĞĞÄµã×ø±ê
+		Point s_startPosition = _centerPosition;//ä¸­å¿ƒç‚¹åæ ‡
 
-		_target->setPosition(s_startPosition + getEllipsePos(_aLength, _bLength, _angle, time));//ÓÉÓÚÎÒÃÇ»­¼ÆËã³öµÄÍÖÔ²Äã×öÖµÊÇÒÔÔ­µãÎªÖĞĞÄµÄ£¬ËùÒÔĞèÒª¼ÓÉÏÎÒÃÇÉè¶¨µÄÖĞĞÄµã×ø±ê
+		_target->setPosition(s_startPosition + getEllipsePos(_aLength, _bLength, _angle, time));//ç”±äºæˆ‘ä»¬ç”»è®¡ç®—å‡ºçš„æ¤­åœ†ä½ åšå€¼æ˜¯ä»¥åŸç‚¹ä¸ºä¸­å¿ƒçš„ï¼Œæ‰€ä»¥éœ€è¦åŠ ä¸Šæˆ‘ä»¬è®¾å®šçš„ä¸­å¿ƒç‚¹åæ ‡
 
 	}
 }
 
 
 
-//HelixAction ÂİĞı
+//HelixAction èºæ—‹
 HelixAction* HelixAction::create(float t, Point center, float minRadius, float maxRadius, float rStartRadians)
 {
 	HelixAction *pc = new HelixAction();
@@ -751,7 +751,7 @@ void PathDraw::removeDrawNode()
 
 
 
-//RotateCorrect ĞŞÕı½Ç¶È
+//RotateCorrect ä¿®æ­£è§’åº¦
 RotateCorrect* RotateCorrect::create(float offsetAngle /*= 0*/)
 {
 	RotateCorrect *ref = new (std::nothrow) RotateCorrect();

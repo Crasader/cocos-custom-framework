@@ -1,4 +1,4 @@
-//
+ï»¿//
 //  DataLoader.cpp
 
 #include "DataLoader.h"
@@ -55,6 +55,7 @@ bool DataLoader::readDataFromFile(const char *filename)
 		cocos2d::Value nvalue = analyconfigData(readdoc);
 		auto item = map<std::string, cocos2d::Value>::value_type(temp.c_str(), nvalue);
 		m_nConfigdata.insert(item);
+		readDataEnd(filename);
 	}
 	
 	return true;
@@ -78,10 +79,16 @@ bool DataLoader::readDataFromFileOtherThread(const char *filename, std::mutex* _
 		auto item = map<std::string, cocos2d::Value>::value_type(temp.c_str(), nvalue);
 		_mutex->lock();
 		m_nConfigdata.insert(item);
+		readDataEnd(filename);
 		_mutex->unlock();
 	}
 
 	return true;
+}
+
+void DataLoader::readDataEnd(const char *filename)
+{
+
 }
 
 cocos2d::ValueMap DataLoader::readDataFromStr(const std::string& contentStr)
@@ -124,7 +131,7 @@ cocos2d::Value DataLoader::analyconfigData(const rapidjson::Value& jsonvalue)
 		int size = jsonvalue.MemberCount();
 		
 		
-		for (auto it = jsonvalue.MemberBegin(); it != jsonvalue.MemberEnd(); it++)//±éÀúËùÓÐµÄkey
+		for (auto it = jsonvalue.MemberBegin(); it != jsonvalue.MemberEnd(); it++)//éåŽ†æ‰€æœ‰çš„key
 		{
 			std::string key = StringUtils::format("%s", (*it).name.GetString());
 			//CCLOG("the key is ---> %s", key.c_str());
@@ -170,7 +177,7 @@ std::string DataLoader::formatStr(const string &str)
 {
 	std::string temp = str;
 	if (temp.find(".json") < temp.length()){
-		//°üº¬json×Ö¶Î
+		//åŒ…å«jsonå­—æ®µ
 		temp = str;
 	}
 	else{

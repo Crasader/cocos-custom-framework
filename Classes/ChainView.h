@@ -1,4 +1,4 @@
-#ifndef __ChainView_H__
+ï»¿#ifndef __ChainView_H__
 #define __ChainView_H__
 
 #include "PublicDefine.h"
@@ -64,7 +64,7 @@ protected:
 	bool fltEqualZero(const Vec2& point) const;
 
 protected:
-	bool _isAdsorb = false;//Îü¸½
+	bool _isAdsorb = false;//å¸é™„
 	bool _isTouchBegin = false;
 	bool _doBoundItem = false;
 	float _scrollTime = 0;

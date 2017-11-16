@@ -1,4 +1,4 @@
-#include "AudioManager.h"
+ï»¿#include "AudioManager.h"
 
 
 static AudioManager *_globaldata;
@@ -73,7 +73,7 @@ int AudioManager::PlayVoiceEffect(const std::string& nstr)
 	
 	return curVoiceId;
 }
-//Í¨¹ı ÔªËØÃû³Æ ²¥·ÅÒôĞ§
+//é€šè¿‡ å…ƒç´ åç§° æ’­æ”¾éŸ³æ•ˆ
 int AudioManager::PlayVoiceUniqueness(const std::string& nstr)
 {
 	auto data = nstr;
@@ -130,7 +130,7 @@ void AudioManager::stopVoice(const std::string& nstr)
 void AudioManager::voiceEndCallback(int id, const std::string& filePath)
 { 
 }
-//Ô¤¼ÓÔØÒôĞ§
+//é¢„åŠ è½½éŸ³æ•ˆ
 void AudioManager::preloadVoice(const std::string& nstr)
 {
 	AudioEngine::preload(formatStr(nstr).c_str());
@@ -198,7 +198,7 @@ std::string AudioManager::formatStr(const std::string &str)
 {
 	std::string temp = str;
 	if (str.find(".ogg") < str.length() || str.find(".mp3") < str.length()){
-		//°üº¬ogg×Ö¶Î
+		//åŒ…å«oggå­—æ®µ
 		temp = str;
 	}
 	else{

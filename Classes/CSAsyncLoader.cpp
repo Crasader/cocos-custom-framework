@@ -1,4 +1,4 @@
-#include "CSAsyncLoader.h"
+ï»¿#include "CSAsyncLoader.h"
 #include "flatbuffers/flatbuffers.h"
 #include "flatbuffers/util.h"
 #include "cocostudio/FlatBuffersSerialize.h"
@@ -198,7 +198,7 @@ bool CSAsyncLoader::pack(const flatbuffers::NodeTree* nodetree)
 //  		{
 //  				  if (FileUtils::getInstance()->isFileExist(path))
 //  				  {
-//  					  //¼ÓÔØ×ÊÔ´
+//  					  //åŠ è½½èµ„æº
 //  					  CCLOG("load res -> %s", path.c_str());
 // 
 //  				  }
@@ -214,10 +214,10 @@ bool CSAsyncLoader::pack(const flatbuffers::NodeTree* nodetree)
 //  				  SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(path);
 //  				  if (spriteFrame)
 //  				  {
-//  					  //×ÊÔ´ÔÚÄÚ´æÖÐ´æÔÚ
+//  					  //èµ„æºåœ¨å†…å­˜ä¸­å­˜åœ¨
 //  				  }
 //  				  else
-//  				  {//×ÊÔ´ÔÚÄÚ´æÖÐ²»´æÔÚ
+//  				  {//èµ„æºåœ¨å†…å­˜ä¸­ä¸å­˜åœ¨
 //  					  if (FileUtils::getInstance()->isFileExist(plist))
 //  					  {
 //  
@@ -276,7 +276,7 @@ bool CSAsyncLoader::loadAsync(std::function<void(float)> progressCallBack)
 		{
 				  if (FileUtils::getInstance()->isFileExist(path))
 				  {
-					  //¼ÓÔØ×ÊÔ´
+					  //åŠ è½½èµ„æº
 					  CCLOG("load res -> %s", path.c_str());
 
 					  pTextureCache->addImageAsync(path, [=](Texture2D *pTexture)
@@ -299,11 +299,11 @@ bool CSAsyncLoader::loadAsync(std::function<void(float)> progressCallBack)
 				  bool isDidLoad = find(didLoadPlist.begin(), didLoadPlist.end(), plist) != didLoadPlist.end();
 				  if (spriteFrame || isDidLoad)
 				  {
-					  //×ÊÔ´ÔÚÄÚ´æÖÐ´æÔÚ
+					  //èµ„æºåœ¨å†…å­˜ä¸­å­˜åœ¨
 					  percentAdd();
 				  }
 				  else
-				  {//×ÊÔ´ÔÚÄÚ´æÖÐ²»´æÔÚ
+				  {//èµ„æºåœ¨å†…å­˜ä¸­ä¸å­˜åœ¨
 					  if (FileUtils::getInstance()->isFileExist(plist))
 					  {
 						  didLoadPlist.push_back(plist);

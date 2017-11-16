@@ -1,4 +1,4 @@
-#include "GridView.h"
+ï»¿#include "GridView.h"
 
 
 GridView::GridView()
@@ -71,21 +71,19 @@ void GridView::doGridLayout()
 		auto _layout = ListView::getItem(layoutIndex);
 		auto item = _gridView_items.at(i);
 		
-		//if (item->getPosition() != grid.origin){//Î»ÖÃÓÐ±ä
+		//if (item->getPosition() != grid.origin){//ä½ç½®æœ‰å˜
 			if (item->getParent() != _layout){
 				item->removeFromParent();
 				_layout->addChild(item);
 			}
 		//}
 		
-// 		auto posLabel = EasyBuild::toLabel(item->getChildByName("pos"));
-// 		posLabel->setString(StringUtils::format("pos:%d",i));
 
 		item->setPositionX(grid.origin.x + grid.size.width / 2);
 		item->setPositionY(grid.origin.y + grid.size.height / 2);
 	}
 
-	for (auto item : _items)//°ÑÃ»ÓÐÔªËØµÄ layout ÒÆ³ý
+	for (auto item : _items)//æŠŠæ²¡æœ‰å…ƒç´ çš„ layout ç§»é™¤
 	{
 		if (item->getChildrenCount() == 0){
 			ListView::removeChild(item);
@@ -139,9 +137,6 @@ void GridView::addItem(Widget* item, ssize_t index)
 	_gridView_items.insert(index, item);
 
 	
-// 	auto indexLabel = EasyBuild::toLabel(item->getChildByName("index"));;
-// 	indexLabel->setString(StringUtils::format("index:%d", (int)index));
-
 	doGridLayout();
 
 }

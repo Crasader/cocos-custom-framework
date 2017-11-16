@@ -1,4 +1,4 @@
-#ifndef __myActionInterval_H__
+ï»¿#ifndef __myActionInterval_H__
 #define __myActionInterval_H__
 
 #include <cocos2d.h>
@@ -397,7 +397,7 @@ private:
 };
 
 
-//RotateCorrect  ÐÞÕý½Ç¶È
+//RotateCorrect  ä¿®æ­£è§’åº¦
 class RotateCorrect : public ActionInterval
 {
 public:

@@ -1,108 +1,76 @@
-#include "DataManager.h"
+﻿#include "DataManager.h"
 
-DataManager* DataManager::instance = nullptr;
-DataManager::DataManager()
+static DataManager *_datamamager;
+DataManager * DataManager::shareDataManager()
 {
-}
-
-DataManager::~DataManager()
-{
-
+	if (!_datamamager)
+	{
+		_datamamager = new DataManager();
+		_datamamager->init();
+	}
+	return _datamamager;
 }
 
 DataManager* DataManager::getInstance()
 {
-	if (!instance){
-		instance = new (std::nothrow) DataManager();
-		instance->init();
+	return shareDataManager();
+}
+
+bool DataManager::init()
+{
+	if (DataLoader::init()){
+		return true;
 	}
-	return instance;
+	return false;
 }
 
-void DataManager::destroyInstance()
+void DataManager::readDataEnd(const char *filename)
 {
-	CC_SAFE_DELETE(instance);
-}
-
-void DataManager::init()
-{
-
-}
-
-cocos2d::ValueMap DataManager::getSetData(const int &rId, const std::string &rSFileName)
-{
-	string str = StringUtils::format("%d", rId);
-	return getSetData(str, rSFileName);
-}
-
-cocos2d::ValueMap DataManager::getSetData(const std::string &rId, const std::string &rSFileName)
-{
-	cocos2d::ValueMap data = DataUtils::getInstance()->getTableDatabyName(rSFileName);
 	
-	bool isExist = data.find(rId.c_str()) != data.end();
-	if (!isExist)return ValueMap();
-	cocos2d::ValueMap setData = data.at(rId.c_str()).asValueMap();
-	return setData;
 }
 
-std::string DataManager::getString(const std::string &rId, const std::string &rKey, const std::string &rSFileName)
+ValueVector* DataManager::getTableDataAsValueVectorByName(const std::string& filename)
 {
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-	return  setData.at(rKey).asString();
+	CCLOG("the data -> %s", formatStr(filename).c_str());
+	return &m_nConfigdata[formatStr(filename)].asValueVector();
 }
 
-int DataManager::getInt(const std::string &rId, const std::string &rKey, const std::string &rSFileName)
+ValueMap* DataManager::getTableDataAsValueMapByName(const std::string& filename)
 {
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-	return  setData.at(rKey).asInt();
+	return &m_nConfigdata[formatStr(filename)].asValueMap();
 }
 
-double DataManager::getFloat(const std::string &rId, const std::string &rKey, const std::string &rSFileName)
-{
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-	return  setData.at(rKey).asFloat();
-}
-std::string DataManager::getString(const int &rId, const std::string &rKey, const std::string &rSFileName)
-{
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-	return  setData.at(rKey).asString();
-}
-
-int DataManager::getInt(const int &rId, const std::string &rKey, const std::string &rSFileName)
+void DataManager::initConfig()
 {
 
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-	return  setData.at(rKey).asInt();
 }
 
-double DataManager::getFloat(const int &rId, const std::string &rKey, const std::string &rSFileName)
+ValueMap* DataManager::getTextDescMapByKey(const std::string& key)
 {
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-
-	return  setData.at(rKey).asFloat();
+// 	ValueVector*  nlanguagedata = getTableDataAsValueVectorByName(json_Language);
+// 	auto numstr = key.substr(4);
+// 	int index = std::atoi(numstr.c_str());
+// 	if (index > 0 && index <= nlanguagedata->size())
+// 	{
+// 		auto& ndatamap = nlanguagedata->at(index - 1).asValueMap();
+// 		return &ndatamap;
+// 	}
+	return nullptr;
 }
 
-bool DataManager::hasKey(const std::string &rId, const std::string &rKey, const std::string &rSFileName)
+cocos2d::Value DataManager::getValue(const cocos2d::ValueMap& setData, int rId)
 {
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-	return  hasKey(setData, rKey);
+	auto str = StringUtils::format("%d", rId);
+	return setData.at(str);
 }
 
-bool DataManager::hasKey(const int &rId, const std::string &rKey, const std::string &rSFileName)
+bool DataManager::hasKey(const ValueMap& map, const std::string &key)
 {
-	cocos2d::ValueMap setData = getSetData(rId, rSFileName);
-	return  hasKey(setData, rKey);
-}
-bool DataManager::hasKey(ValueMap map, const std::string &key)
-{
-	bool has = map.find(key)!= map.end();
+	bool has = map.find(key) != map.end();
 	return has;
 }
 
-cocos2d::Value DataManager::getValue(cocos2d::ValueMap setData, const std::string &key)
+DataManager::~DataManager()
 {
-	if (hasKey(setData, key)){
-		return setData.at(key);
-	}
-	return cocos2d::Value();
+	
 }

@@ -1,4 +1,4 @@
-#ifndef _C2DCOMBASE_h_
+﻿#ifndef _C2DCOMBASE_h_
 #define _C2DCOMBASE_h_
 
 #include "cocos2d.h"
@@ -82,7 +82,7 @@ if (pRet && pRet->init(var)) \
 	static_cast<Node*>(cocos2d::c2d::myObjectFactory::getInstance()->createObject(__KEY__))
 
 
-#define CREATE_CLASS_COMPONENT_INFO(__CLASS__) \
+#define CREATE_CLASS_COMPONENT_INFO_C2D(__CLASS__) \
 	cocos2d::c2d::myObjectFactory::TInfo(#__CLASS__, &__CLASS__::createInstance)
 
 

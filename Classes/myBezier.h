@@ -1,4 +1,4 @@
-#ifndef __myBezier_h__  
+﻿#ifndef __myBezier_h__  
 #define __myBezier_h__  
 
 #include "cocos2d.h"    

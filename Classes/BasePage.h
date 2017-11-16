@@ -1,4 +1,4 @@
-#ifndef __BasePage_H__
+﻿#ifndef __BasePage_H__
 #define __BasePage_H__
 
 #include "PublicCoco.h"

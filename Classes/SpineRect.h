@@ -1,4 +1,4 @@
-#ifndef __SpineRect_H__
+ï»¿#ifndef __SpineRect_H__
 #define __SpineRect_H__
 #include "SpineFace.h"
 #include "Align.h"
@@ -16,9 +16,9 @@ public:
 	
 public:
 	
-	virtual Rect getBoundingBox(std::vector<spSlot*>* slots = nullptr);//²¿·Ö²¿Î»µÄ Box
+	virtual Rect getBoundingBox(std::vector<spSlot*>* slots = nullptr);//éƒ¨åˆ†éƒ¨ä½çš„ Box
 	
-	//ÅäºÏ getBoundingBox Ê¹ÓÃ
+	//é…åˆ getBoundingBox ä½¿ç”¨
 	virtual c2d::Rectangle getRectangle(Rect rBoundingBox = Rect::ZERO);
 
 	virtual void setPostion(c2d::Align alignment,Vec2 pos, std::vector<spSlot*>* slots = nullptr);
@@ -27,7 +27,7 @@ public:
 
 	virtual Vec2 calculatePosition(c2d::Align align, const Vec2& pos, std::vector<spSlot*>* slots = nullptr);
 
-	virtual void addBoundNodeWithBone(const std::string &boneName,Node* node);//Ìí¼Ó½ÚµãÔÚÄ³¸ö¹Ç÷ÀÎ»ÖÃ£¬²¢¸úËæ Î»ÖÃÒÆ¶¯
+	virtual void addBoundNodeWithBone(const std::string &boneName,Node* node);//æ·»åŠ èŠ‚ç‚¹åœ¨æŸä¸ªéª¨éª¼ä½ç½®ï¼Œå¹¶è·Ÿéš ä½ç½®ç§»åŠ¨
 	virtual void removeBoundNode(Node* node,bool removeFromParent = true);//
 	virtual void removeBoundNode(const std::string & nodeName, bool removeFromParent = true);//
 	virtual void removeBoundNode(const std::string & boneName, const std::string & nodeName, bool removeFromParent = true);//

@@ -1,4 +1,4 @@
-#ifndef __COLORUTILS_H__
+﻿#ifndef __COLORUTILS_H__
 #define __COLORUTILS_H__
 
 #include "cocos2d.h"

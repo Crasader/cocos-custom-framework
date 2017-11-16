@@ -1,4 +1,4 @@
-#include "UIFactory.h"
+﻿#include "UIFactory.h"
 
 UIFactory *UIFactory::_gInstance;
 bool UIFactory::init()

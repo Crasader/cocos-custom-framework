@@ -1,4 +1,4 @@
-#include "BasePage.h"
+﻿#include "BasePage.h"
 #include "BaseDialog.h"
 
 

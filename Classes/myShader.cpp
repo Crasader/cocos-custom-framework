@@ -1,11 +1,11 @@
-#include "myShader.h"
+ï»¿#include "myShader.h"
 
 const char* shaderNameStroke = "ShjyShader_Stroke";
 NS_CC_BEGIN
 
 namespace myShader
 {
-	// ´«ÈëÃè±ß¿í¶È£¨ÏñËØÎªµ¥Î»£©£¬Ãè±ßÑÕÉ«£¬Í¼Æ¬´óÐ¡£¬»ñµÃGLProgramState  
+	// ä¼ å…¥æè¾¹å®½åº¦ï¼ˆåƒç´ ä¸ºå•ä½ï¼‰ï¼Œæè¾¹é¢œè‰²ï¼Œå›¾ç‰‡å¤§å°ï¼ŒèŽ·å¾—GLProgramState  
 	cocos2d::GLProgramState* getStrokeProgramState(float outlineSize, cocos2d::Color3B outlineColor, cocos2d::Size textureSize, cocos2d::Color3B foregroundColor/* = cocos2d::Color3B::WHITE*/)
 	{
 		CCLOG("the size is --> %f,%f", textureSize.width, textureSize.height);

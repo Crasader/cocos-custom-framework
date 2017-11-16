@@ -1,4 +1,4 @@
-#ifndef __SPINEFACE_H__
+ï»¿#ifndef __SPINEFACE_H__
 #define __SPINEFACE_H__
 #include "mySpine.h"
 #include "myGeometry.h"
@@ -17,7 +17,7 @@ public:
 	 * the spine play key
 	 */
 	CC_SYNTHESIZE_PASS_BY_REF(std::string, _sPlayKey, SPlayKey);
-	CC_SYNTHESIZE_PASS_BY_REF(bool, _bIsPlaying, IsPlaying);//ÊÇ·ñÕıÔÚ²¥·Å¶¯»­
+	CC_SYNTHESIZE_PASS_BY_REF(bool, _bIsPlaying, IsPlaying);//æ˜¯å¦æ­£åœ¨æ’­æ”¾åŠ¨ç”»
 public:
 	virtual void stopAnim();
 

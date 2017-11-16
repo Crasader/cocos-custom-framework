@@ -1,4 +1,4 @@
-#ifndef __BaseDialog_H__
+ï»¿#ifndef __BaseDialog_H__
 #define __BaseDialog_H__
 
 #include "BasePage.h"
@@ -86,8 +86,8 @@ public:
 	static BaseDialog* create(const std::string& filename);
 	static BaseDialog* create(Node* node);
 	
-	virtual bool initWithParam(Ref* param);//ÓĞ²ÎÊıµÄÊ±ºòĞèÒªÊµÏÖµÄ³õÊ¼»¯º¯Êı
-	virtual bool initWithNoParam();//Ã»ÓĞ²ÎÊıµÄÊ±ºòĞèÒªÊµÏÖµÄ³õÊ¼»¯º¯Êı
+	virtual bool initWithParam(Ref* param);//æœ‰å‚æ•°çš„æ—¶å€™éœ€è¦å®ç°çš„åˆå§‹åŒ–å‡½æ•°
+	virtual bool initWithNoParam();//æ²¡æœ‰å‚æ•°çš„æ—¶å€™éœ€è¦å®ç°çš„åˆå§‹åŒ–å‡½æ•°
 
 	virtual void show();
 	virtual void close() final;
@@ -104,8 +104,8 @@ public:
 	virtual void setShowCallbackFunc(std::function<void()> showCallbackFunc);
 	virtual void setCloseCallbackFunc(std::function<void()> closeCallbackFunc);
 
-	virtual float behindScene();//ÔİÍË
-	virtual float recoverScene();//»Ö¸´
+	virtual float behindScene();//æš‚é€€
+	virtual float recoverScene();//æ¢å¤
 
 	virtual void onBehindSceneCallback();
 	virtual void onRecoverSceneCallback();
@@ -137,7 +137,7 @@ public:
 	virtual std::vector<Node*> getNodeVector(const char* name,...);
 	virtual void showButtonDelayPop(const char* name, ...);
 
-	virtual void showButtonDelayPop(Node* node, ...);//×îºóÒ»¸ö²ÎÊı±ØĞëÎª nullptr
+	virtual void showButtonDelayPop(Node* node, ...);//æœ€åä¸€ä¸ªå‚æ•°å¿…é¡»ä¸º nullptr
 	virtual void showButtonDelayPop(std::vector<Node*> btns);
 	virtual void showButtonDelayPop(std::vector<Node*> btns, float delay, float duration);
 	virtual bool onKeyBack();
@@ -149,13 +149,13 @@ protected:
 	virtual void initAdapter();
 
 	float _fDelayAutoClose;
-	bool _bIsSingleton;//ÊÇ·ñÎ¨Ò»
-	bool _bIsAutoClose;//ÊÇ·ñ×Ô¶¯¹Ø±Õ -- ĞèÒªÔÚ
+	bool _bIsSingleton;//æ˜¯å¦å”¯ä¸€
+	bool _bIsAutoClose;//æ˜¯å¦è‡ªåŠ¨å…³é—­ -- éœ€è¦åœ¨
 	
-	bool _bIsListenBackKey;//ÊÇ·ñ¼àÌı·µ»Ø¼ü
-	bool _bIsTapBackGroundClose; // ÊÇ·ñµã»÷±³¾°¹Ø±Õ
+	bool _bIsListenBackKey;//æ˜¯å¦ç›‘å¬è¿”å›é”®
+	bool _bIsTapBackGroundClose; // æ˜¯å¦ç‚¹å‡»èƒŒæ™¯å…³é—­
 	
-	BaseDialog* _pPreviousDialog;//±»Ñ¹ÈëµÄ½çÃæ
+	BaseDialog* _pPreviousDialog;//è¢«å‹å…¥çš„ç•Œé¢
 
 	std::function<void()> _showCallbackFunc = nullptr;
 	std::function<void()> _closeCallbackFunc = nullptr;
@@ -176,7 +176,9 @@ public:
 	static BaseDialog* CloseUI(const std::string& filepath);
 	static BaseDialog* CloseUI(BaseDialog* dialog);
 	static BaseDialog* CloseUI();
+	static int getSize();
 	static bool onKeyBack();
+	static void cleanDialog();
 private:
 
 };

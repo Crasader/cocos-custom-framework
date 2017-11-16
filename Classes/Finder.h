@@ -1,4 +1,4 @@
-#ifndef __Finder_H__
+﻿#ifndef __Finder_H__
 #define __Finder_H__
 
 #include "cocos2d.h"

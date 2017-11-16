@@ -1,4 +1,4 @@
-#ifndef __mySpine_H__  
+ï»¿#ifndef __mySpine_H__  
 #define __mySpine_H__  
 #pragma once
 #include "cocos2d.h"
@@ -10,11 +10,11 @@ struct spSkeleton;
 using namespace spine;
 /*
 mySpine
-ÖØĞ´drawSkeletonÀà£¬ÔÚäÖÈ¾Ê±ÕÒ³öĞèÒª»»·ôslot£¬ÓÃÍâ²¿µÄtextureÀ´äÖÈ¾
-ÓĞÈıÖÖÀàĞÍµÄäÖÈ¾·½Ê½
-SP_ATTACHMENT_REGION:ÊÇÒ»¸ö¾ØĞÎÍ¼Æ¬µÄäÖÈ¾£¬ËùÒÔÖ±½ÓÓÃÀàÖĞmUsvÀ´ÉèÖÃuvs
-SP_ATTACHMENT_MESH:usvĞèÒª¼ÆËãÒ»ÏÂ£¬´ó¸Å¾ÍÊÇ¼ÆËãÒ»ÏÂ x = (x-minx)/(maxx-minx), y = (y-miny)/(maxy-miny)
-SP_ATTACHMENT_SKINNED_MESH:¸úSP_ATTACHMENT_MESH²î²»¶à£¬Ö»ÊÇSP_ATTACHMENT_MESHÓÃverticesCount£¬µ±Ç°ÓÃuvsCount
+é‡å†™drawSkeletonç±»ï¼Œåœ¨æ¸²æŸ“æ—¶æ‰¾å‡ºéœ€è¦æ¢è‚¤slotï¼Œç”¨å¤–éƒ¨çš„textureæ¥æ¸²æŸ“
+æœ‰ä¸‰ç§ç±»å‹çš„æ¸²æŸ“æ–¹å¼
+SP_ATTACHMENT_REGION:æ˜¯ä¸€ä¸ªçŸ©å½¢å›¾ç‰‡çš„æ¸²æŸ“ï¼Œæ‰€ä»¥ç›´æ¥ç”¨ç±»ä¸­mUsvæ¥è®¾ç½®uvs
+SP_ATTACHMENT_MESH:usvéœ€è¦è®¡ç®—ä¸€ä¸‹ï¼Œå¤§æ¦‚å°±æ˜¯è®¡ç®—ä¸€ä¸‹ x = (x-minx)/(maxx-minx), y = (y-miny)/(maxy-miny)
+SP_ATTACHMENT_SKINNED_MESH:è·ŸSP_ATTACHMENT_MESHå·®ä¸å¤šï¼Œåªæ˜¯SP_ATTACHMENT_MESHç”¨verticesCountï¼Œå½“å‰ç”¨uvsCount
 */
 class mySpine :public spine::SkeletonAnimation
 {
@@ -34,7 +34,7 @@ public:
 	virtual void setSkinFileWithData(const std::string& slotName, const std::string& filePath);
 	virtual void setSkinFile(const std::string& slotName, Sprite* rSprite);
 	virtual void setSkinFile(const std::string& slotName, Texture2D* rTexture2D);
-	virtual void setSkinAlphas(const std::string& slotName, float alpha, float duration = 0);//duration ÊÇ¹ı¶ÉÊ±¼ä
+	virtual void setSkinAlphas(const std::string& slotName, float alpha, float duration = 0);//duration æ˜¯è¿‡æ¸¡æ—¶é—´
 	virtual void cleanCustomSkin();
 	virtual void removeCustomSkin(const std::string& slotName);
 
@@ -49,7 +49,7 @@ public:
 protected:
 	virtual void copyTriangles(cocos2d::TrianglesCommand::Triangles* target, cocos2d::TrianglesCommand::Triangles* source);
 private:
-	Map<string, Sprite*>useSkin;	//±£´æĞèÒª»»·ôµÄslot
+	Map<string, Sprite*>useSkin;	//ä¿å­˜éœ€è¦æ¢è‚¤çš„slot
 	map<string, float> slotAlphas;
 	map<string, float> visualSlotAlphas;
 	map<string, float> durations;

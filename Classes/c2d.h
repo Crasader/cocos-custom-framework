@@ -1,4 +1,4 @@
-# ifndef __C2D_H__
+ï»¿# ifndef __C2D_H__
 # define __C2D_H__
 
 
@@ -33,14 +33,20 @@ namespace c2d {
 		
 	
 	 	 void touchMove(Widget * node);
-	 	 bool adaptScreen(Node * node, c2d::Align align);
-	 	 bool adaptScreen(Node * node);
 	 	 void adaptScene(Node* sceneLayer);
-	 	//°Ñ½Úµã×÷ÎªÍ¼Æ¬±£´æ³öÀ´
+
+		 bool adaptScreen(Node * node, c2d::Align align);
+		 bool adaptScreen(Node * node);
+		 void adaptScreen(Node* root, const std::string& childPath, c2d::Align align = c2d::Align::center);
+		 void adaptScreenChildren(Node*root, const std::string& rootPath, c2d::Align align = c2d::Align::center);
+
+
+
+	 	//æŠŠèŠ‚ç‚¹ä½œä¸ºå›¾ç‰‡ä¿å­˜å‡ºæ¥
 	 	 bool saveNodeAsPng(Node* node, std::function<void(RenderTexture*, const std::string&)> callback = nullptr);
 	 	/// <summary>
 	 	/// Intersections the specified node1.
-	 	/// node1 ºÍ node2 ÊÇ·ñÏà½»
+	 	/// node1 å’Œ node2 æ˜¯å¦ç›¸äº¤
 	 	 bool intersection(Node* node1, Node*node2);
 	 	
 	 	 void drawDebug(Node* root, Color4F color = Color4F(0, 1, 0, 1));
@@ -68,12 +74,12 @@ namespace c2d {
 	 	 Image* createImageFromSprite(Sprite *pSpr);
 	 	 Sprite* createSprite(Sprite* rModel, Sprite* fore);
 	 
-	 	//Ê¹ÓÃµÑ¿¨¶û×ø±êÏµ
+	 	//ä½¿ç”¨ç¬›å¡å°”åæ ‡ç³»
 	 	 Color4B getColor4B(Image* rImage, int x, int y);
 	 	 Color4B getColor4B(Image* rImage, Point rPoint);
 	 	
-	 	 bool isRenderTextureClearInRect(Image* image, Rect rext);// Ê¹ÓÃµÑ¿¨¶û×ø±êÏµ Ä³¸öÇøÓòÊÇ·ñÍêÈ«²Á³ı  
-	 	 bool isRenderTextureClear(Image* image);//ÊÇ·ñÍêÈ«²Á³ı  
+	 	 bool isRenderTextureClearInRect(Image* image, Rect rext);// ä½¿ç”¨ç¬›å¡å°”åæ ‡ç³» æŸä¸ªåŒºåŸŸæ˜¯å¦å®Œå…¨æ“¦é™¤  
+	 	 bool isRenderTextureClear(Image* image);//æ˜¯å¦å®Œå…¨æ“¦é™¤  
 	 
 	 	 std::vector<Rect> splitRect(Size root,int rows,int cols);
 	 	
@@ -82,6 +88,14 @@ namespace c2d {
 	 
 	 	 long getCurrentTime();
 
+		 static Node* GetChildByName(Node* root, const std::string& widgetname = "");
+		 template<typename T> inline
+			 static T GetChildByName(Node* root, const std::string& path)
+		 {
+				 return dynamic_cast<T>(GetChildByName(root, path));
+			 }
+
+		 static Node* GetChildByPath(Node* root, const std::string& path);
 } // namespace c2d {
 
 // end of data_structure group

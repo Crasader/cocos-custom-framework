@@ -1,4 +1,4 @@
-#include "BaseDialog.h"
+ï»¿#include "BaseDialog.h"
 #include "VisibleRect.h"
 static std::vector<std::string> _vUiStrVec;
 static Vector<Layout *> _vUiVec;
@@ -374,7 +374,7 @@ BaseDialog* DialogHelper::createUIWithParam(const std::string& filepath, Ref* se
 {
 	BaseDialog* dialog = static_cast<BaseDialog*>(ObjectFactory::getInstance()->createObject(filepath));
 	if (dialog == nullptr){
-		CCLOG("UIFactory can't create the UI->%s", filepath.c_str());
+		CCLOG("ObjectFactory can't create the UI-> [ %s ], use default constructor.", filepath.c_str());
 		dialog = BaseDialog::create(filepath);
 	}
 	if (sender){
@@ -394,19 +394,19 @@ BaseDialog* DialogHelper::ShowUI(const std::string& filepath, Ref* param, bool p
 {
 
 	auto scene = Director::getInstance()->getRunningScene();
-	auto existdialog = static_cast<BaseDialog*>(scene->getChildByName(filepath));//ÓÃ×÷ÅĞ¶ÏÊÇ·ñ´æÔÚ
+	auto existdialog = static_cast<BaseDialog*>(scene->getChildByName(filepath));//ç”¨ä½œåˆ¤æ–­æ˜¯å¦å­˜åœ¨
 	BaseDialog* dialog = nullptr;
-	bool bCreateNewDialog = true;//ÊÇ·ñ ĞÂ½¨ Dialog
+	bool bCreateNewDialog = true;//æ˜¯å¦ æ–°å»º Dialog
 	if (existdialog){
-		bCreateNewDialog = existdialog->isSingleton() == false;//Èç¹û²»ÊÇµ¥ÀıÔòĞÂ½¨
+		bCreateNewDialog = existdialog->isSingleton() == false;//å¦‚æœä¸æ˜¯å•ä¾‹åˆ™æ–°å»º
 	}
-	if (bCreateNewDialog){//µ±Ç°½çÃæÒÑ¾­ÏÔÊ¾ÁËÒªÏÔÊ¾µÄ dialog
+	if (bCreateNewDialog){//å½“å‰ç•Œé¢å·²ç»æ˜¾ç¤ºäº†è¦æ˜¾ç¤ºçš„ dialog
 
 		dialog = createUIWithParam(filepath,param);
 		dialog->setName(filepath);
 		scene->addChild(dialog);
 		float duration = dialog->doShowAction();
-		dialog->runAction(Sequence::create(DelayTime::create(duration), CallFuncN::create([=](Node* node){//ÏÔÊ¾¶¯×÷Ö´ĞĞÍêÖ®ºóµÄ»Øµ÷
+		dialog->runAction(Sequence::create(DelayTime::create(duration), CallFuncN::create([=](Node* node){//æ˜¾ç¤ºåŠ¨ä½œæ‰§è¡Œå®Œä¹‹åçš„å›è°ƒ
 			auto _BaseDialog = static_cast<BaseDialog*>(node);
 			_BaseDialog->onShowCallback();
 		}), nullptr));
@@ -414,12 +414,12 @@ BaseDialog* DialogHelper::ShowUI(const std::string& filepath, Ref* param, bool p
 		if (push){
 			if (_vUiVec.empty() == false){
 				auto thelastdialog = static_cast<BaseDialog*>(_vUiVec.back());
-				if (thelastdialog && thelastdialog->isAutoClose() == false){//Ñ¹ÈëºóÌ¨
+				if (thelastdialog && thelastdialog->isAutoClose() == false){//å‹å…¥åå°
 					dialog->setPreviousDialog(thelastdialog);
 					float dur = thelastdialog->behindScene();
 					thelastdialog->runAction(Sequence::create(DelayTime::create(dur), CallFuncN::create([=](Node* node){
 						auto _BaseDialog = static_cast<BaseDialog*>(node);
-						_BaseDialog->onBehindSceneCallback();//Ñ¹ÈëºóÌ¨Ö®ºóµÄ»Øµ÷
+						_BaseDialog->onBehindSceneCallback();//å‹å…¥åå°ä¹‹åçš„å›è°ƒ
 					}), nullptr));
 				}
 			}
@@ -463,11 +463,11 @@ BaseDialog* DialogHelper::CloseUI(const std::string& filepath)
 		dialog = static_cast<BaseDialog*>(scene->getChildByName(filepath));
 		if (dialog){
 			auto rPreviousDialog = dialog->getPreviousDialog();
-			if (rPreviousDialog){//»Ö¸´µ½³¡¾°
+			if (rPreviousDialog){//æ¢å¤åˆ°åœºæ™¯
 				float dur = rPreviousDialog->recoverScene();
 				rPreviousDialog->runAction(Sequence::create(DelayTime::create(dur), CallFuncN::create([=](Node* node){
 					auto _BaseDialog = static_cast<BaseDialog*>(node);
-					_BaseDialog->onRecoverSceneCallback();//»Ö¸´Íê³ÉÖ®ºóµÄ»Øµ÷
+					_BaseDialog->onRecoverSceneCallback();//æ¢å¤å®Œæˆä¹‹åçš„å›è°ƒ
 				}), nullptr));
 			}
 			float duration = dialog->doCloseAction();
@@ -502,11 +502,11 @@ BaseDialog* DialogHelper::CloseUI(BaseDialog* dialog)
 
 	if (isExist){
 		auto rPreviousDialog = dialog->getPreviousDialog();
-		if (rPreviousDialog){//»Ö¸´µ½³¡¾°
+		if (rPreviousDialog){//æ¢å¤åˆ°åœºæ™¯
 			float dur = rPreviousDialog->recoverScene();
 			rPreviousDialog->runAction(Sequence::create(DelayTime::create(dur), CallFuncN::create([=](Node* node){
 				auto _BaseDialog = static_cast<BaseDialog*>(node);
-				_BaseDialog->onRecoverSceneCallback();//»Ö¸´Íê³ÉÖ®ºóµÄ»Øµ÷
+				_BaseDialog->onRecoverSceneCallback();//æ¢å¤å®Œæˆä¹‹åçš„å›è°ƒ
 			}), nullptr));
 		}
 		float duration = dialog->doCloseAction();
@@ -527,4 +527,15 @@ bool DialogHelper::onKeyBack()
 	auto temdialog = _vUiVec.back();
 	auto dialog = static_cast<BaseDialog*>(temdialog);
 	return dialog->onKeyBack();
+}
+
+void DialogHelper::cleanDialog()
+{
+	_vUiVec.clear();
+	_vUiStrVec.clear();
+}
+
+int DialogHelper::getSize()
+{
+	return _vUiVec.size();
 }

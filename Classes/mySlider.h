@@ -1,4 +1,4 @@
-#ifndef __mySlider_H__
+﻿#ifndef __mySlider_H__
 #define __mySlider_H__
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
