@@ -1,6 +1,6 @@
 ﻿#include "AppDelegate.h"
 #include "HelloWorldScene.h"
-#include "SceneLoading.h"
+#include "SceneManager.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -32,7 +32,7 @@ AppDelegate::~AppDelegate()
 #endif
 }
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(1536, 768);
+static cocos2d::Size designResolutionSize = cocos2d::Size(1136, 640);
 static cocos2d::Size actualResolutionSize = cocos2d::Size(1536 / 3 * 2, 768 / 3 * 2);
 //if you want a different context,just modify the value of glContextAttrs
 //it will takes effect on all platforms
@@ -54,7 +54,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
-    director->getOpenGLView()->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    director->getOpenGLView()->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::FIXED_WIDTH);
 
     // turn on display FPS
     director->setDisplayStats(true);
@@ -65,11 +65,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     FileUtils::getInstance()->addSearchPath("res");
 
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+//     auto scene = HelloWorld::createScene();
+// 
+//     // run
+//     director->runWithScene(scene);
 
-    // run
-    director->runWithScene(scene);
-
+	SceneManager::getInstance()->replaceScene(eSceneMain);
     return true;
 }
 

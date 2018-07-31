@@ -3,13 +3,282 @@
   <SolutionFolder>
     <Group ctype="ResourceGroup">
       <RootFolder Name=".">
+        <Folder Name="AllPicRes">
+          <Folder Name="Achieve">
+            <Image Name="ABord.png" />
+            <Image Name="AchieveRect.png" />
+            <Image Name="AFlagComplete.png" />
+            <Image Name="btnAClaimNormal.png" />
+            <Image Name="btnAClaimPress.png" />
+            <Image Name="btnAClose.png" />
+            <Image Name="btnAGoNormal.png" />
+            <Image Name="btnAGoPress.png" />
+            <PlistInfo Name="PlistAchieve.csi" Type="Plist" />
+            <Image Name="TitleAchieve.png" />
+          </Folder>
+          <Folder Name="Background">
+            <Image Name="Background.png" />
+          </Folder>
+          <Folder Name="General">
+            <Image Name="btnBack.png" />
+            <Image Name="btnBCloseNormal.png" />
+            <Image Name="btnBClosePress.png" />
+            <Image Name="btnGChallengeNormal.png" />
+            <Image Name="btnGChallengePress.png" />
+            <Image Name="btnGCommentNormal.png" />
+            <Image Name="btnGCommentPress.png" />
+            <Image Name="btnGContinueNormal.png" />
+            <Image Name="btnGContinuePress.png" />
+            <Image Name="btnGHomeNormal.png" />
+            <Image Name="btnGHomePress.png" />
+            <Image Name="btnGNoNormal.png" />
+            <Image Name="btnGNoPress.png" />
+            <Image Name="btnGRechargeNormal.png" />
+            <Image Name="btnGRechargePress.png" />
+            <Image Name="btnGYesNormal.png" />
+            <Image Name="btnGYesPress.png" />
+            <Image Name="btnPlus.png" />
+            <Image Name="btnSCloseNormal.png" />
+            <Image Name="btnSClosePress.png" />
+            <Image Name="FlagPoint.png" />
+            <Image Name="G01.png" />
+            <Image Name="GBord001.png" />
+            <Image Name="GBord003.png" />
+            <Image Name="GLight.png" />
+            <Image Name="GYellowBar.png" />
+            <Image Name="icoGStarDark.png" />
+            <Image Name="icoGStarLight.png" />
+            <Image Name="icoMoney.png" />
+            <PlistInfo Name="PlistGeneral.csi" Type="Plist" />
+            <Image Name="top.png" />
+            <Image Name="Txt001.png" />
+            <Image Name="Txt002.png" />
+            <Image Name="Txt003.png" />
+            <Image Name="TxtBord.png" />
+          </Folder>
+          <Folder Name="KingLines">
+            <Image Name="KBord.png" />
+            <Image Name="KNameBord0.png" />
+            <Image Name="KNameBord1.png" />
+            <Image Name="KNameBordCheck.png" />
+            <Image Name="KPoint.png" />
+            <Image Name="KRankBord.png" />
+            <Image Name="KWorldMap.png" />
+            <Image Name="Mode.jpg" />
+            <PlistInfo Name="PlistKingLines.csi" Type="Plist" />
+            <Image Name="TitleKingLines.png" />
+          </Folder>
+          <Folder Name="Open">
+            <Image Name="btnOPlayerNormal.png" />
+            <Image Name="btnOPlayerOut.png" />
+            <Image Name="btnOPlayerPlayer.png" />
+            <Image Name="btnOPlayerPress.png" />
+            <Image Name="Model0.jpg" />
+            <Image Name="Model1.jpg" />
+            <Image Name="OBackground.png" />
+            <Image Name="OBord.png" />
+            <Image Name="OBottom.png" />
+            <Image Name="OInfoBord.png" />
+            <Image Name="OLineDrak0.png" />
+            <Image Name="OLineDrak1.png" />
+            <Image Name="OLineLight0.png" />
+            <Image Name="OLineLight1.png" />
+            <PlistInfo Name="PlistOpen.csi" Type="Plist" />
+            <Image Name="Title_Australian.png" />
+            <Image Name="Title_French.png" />
+            <Image Name="Title_US.png" />
+            <Image Name="Title_Wimbledon.png" />
+          </Folder>
+          <Folder Name="Racket">
+            <Image Name="DressRoomRacket1.png" />
+            <Image Name="DressRoomRacket10.png" />
+            <Image Name="DressRoomRacket2.png" />
+            <Image Name="DressRoomRacket3.png" />
+            <Image Name="DressRoomRacket4.png" />
+            <Image Name="DressRoomRacket5.png" />
+            <Image Name="DressRoomRacket6.png" />
+            <Image Name="DressRoomRacket7.png" />
+            <Image Name="DressRoomRacket8.png" />
+            <Image Name="DressRoomRacket9.png" />
+            <PlistInfo Name="PlistRacket.csi" Type="Plist" />
+            <Image Name="Racket5.png" />
+          </Folder>
+          <Folder Name="Recharge">
+            <Image Name="btnRClose.png" />
+            <PlistInfo Name="PlistRecharge.csi" Type="Plist" />
+            <Image Name="R00.png" />
+            <Image Name="R01.png" />
+            <Image Name="R02.png" />
+            <Image Name="R03.png" />
+            <Image Name="R04.png" />
+            <Image Name="R05.png" />
+            <Image Name="RBord.png" />
+            <Image Name="RBord_B.png" />
+            <Image Name="RBord_S.png" />
+            <Image Name="RBtnBord.png" />
+            <Image Name="RTipBuySuccess.png" />
+            <Image Name="Title_Recharge.png" />
+          </Folder>
+          <Folder Name="Role">
+            <Image Name="ManHalfBody1.png" />
+            <Image Name="ManHalfBody2.png" />
+            <Image Name="ManHalfBody3.png" />
+            <Image Name="ManHalfBody4.png" />
+            <Image Name="ManHalfBody5.png" />
+            <Image Name="ManHead1.png" />
+            <Image Name="ManHead2.png" />
+            <Image Name="ManHead3.png" />
+            <Image Name="ManHead4.png" />
+            <Image Name="ManHead5.png" />
+            <PlistInfo Name="PlistRole.csi" Type="Plist" />
+            <Image Name="WomanHalfBody1.png" />
+            <Image Name="WomanHalfBody2.png" />
+            <Image Name="WomanHalfBody3.png" />
+            <Image Name="WomanHalfBody4.png" />
+            <Image Name="WomanHalfBody5.png" />
+            <Image Name="WomanHead1.png" />
+            <Image Name="WomanHead2.png" />
+            <Image Name="WomanHead3.png" />
+            <Image Name="WomanHead4.png" />
+            <Image Name="WomanHead5.png" />
+          </Folder>
+          <Folder Name="SceneDressing">
+            <Image Name="agility.png" />
+            <Image Name="btnBuyNormal.png" />
+            <Image Name="btnBuyPress.png" />
+            <Image Name="btnUsingNormal.png" />
+            <Image Name="btnUsingPress.png" />
+            <Image Name="C_CheckBox.png" />
+            <Image Name="C_Racket_Check.png" />
+            <Image Name="C_Racket_Normal.png" />
+            <Image Name="C_Role_Check.png" />
+            <Image Name="C_Role_Normal.png" />
+            <Image Name="C_Shoe_Check.png" />
+            <Image Name="C_Shoe_Normal.png" />
+            <Image Name="energy.png" />
+            <Image Name="GoodsBG.png" />
+            <Image Name="GoodsCheckBox.png" />
+            <PlistInfo Name="PlistSceneDressing.csi" Type="Plist" />
+            <Image Name="Point.png" />
+            <Image Name="PointBG.png" />
+            <Image Name="TipBuySuccess.png" />
+            <Image Name="TipDressed.png" />
+            <Image Name="Title_DressingRoom.png" />
+          </Folder>
+          <Folder Name="SceneGame">
+            <Folder Name="Pause">
+              <Image Name="btnPContinueNormal.png" />
+              <Image Name="btnPContinuePress.png" />
+              <Image Name="btnPQuitNormal.png" />
+              <Image Name="btnPQuitPress.png" />
+              <Image Name="btnRestartNormal.png" />
+              <Image Name="btnRestartPress.png" />
+              <Image Name="PBoard.png" />
+            </Folder>
+            <Folder Name="Settlement">
+              <Image Name="S2Bord.png" />
+              <Image Name="S2Light.png" />
+              <Image Name="S2ScoreBord.png" />
+              <Image Name="YouLose.png" />
+              <Image Name="YouWin.png" />
+            </Folder>
+            <Folder Name="Statistics">
+              <Image Name="btnS3GoNormal.png" />
+              <Image Name="btnS3GoPress.png" />
+              <Image Name="S3Bord.png" />
+              <Image Name="S3InfoBord.png" />
+            </Folder>
+            <Image Name="btnGPause.png" />
+            <Image Name="GFlagServe.png" />
+            <Image Name="GFlagWin.png" />
+            <Image Name="GOppoBar.png" />
+            <Image Name="GOppoBord.png" />
+            <Image Name="GRealTimeInfoBord.png" />
+            <Image Name="GResultsBord.png" />
+            <Image Name="GScoreBord.png" />
+            <PlistInfo Name="PlistGameUI.csi" Type="Plist" />
+          </Folder>
+          <Folder Name="SceneLoading">
+            <Folder Name="tennis_anim">
+              <PlistInfo Name="PlistTennis.csi" Type="Plist" />
+              <Image Name="Tennis01.png" />
+              <Image Name="Tennis02.png" />
+              <Image Name="Tennis03.png" />
+              <Image Name="Tennis04.png" />
+              <Image Name="Tennis05.png" />
+              <Image Name="Tennis06.png" />
+              <Image Name="Tennis07.png" />
+              <Image Name="Tennis08.png" />
+              <Image Name="Tennis09.png" />
+              <Image Name="Tennis10.png" />
+              <Image Name="Tennis11.png" />
+              <Image Name="Tennis12.png" />
+            </Folder>
+            <Image Name="Loading01.png" />
+          </Folder>
+          <Folder Name="SceneMain">
+            <Image Name="btnAchievement.png" />
+            <Image Name="btnIntegral.png" />
+            <Image Name="btnReward.png" />
+            <Image Name="btnSet.png" />
+            <Image Name="btnShare.png" />
+            <Image Name="btnVideo.png" />
+            <Image Name="M02B.png" />
+            <Image Name="M03B.png" />
+            <Image Name="MECheck.png" />
+            <Image Name="MEDressing.png" />
+            <Image Name="MEKingLines.png" />
+            <Image Name="MEOpenGame.png" />
+            <Image Name="MEOpenGame_Australian.png" />
+            <Image Name="MEOpenGame_French.png" />
+            <Image Name="MEOpenGame_US.png" />
+            <Image Name="MEOpenGame_Wimbledon.png" />
+            <Image Name="MEPractice.png" />
+            <Image Name="METitle_Australian.png" />
+            <Image Name="METitle_Dressing.png" />
+            <Image Name="METitle_French.png" />
+            <Image Name="METitle_KingLines.png" />
+            <Image Name="METitle_Practice.png" />
+            <Image Name="METitle_US.png" />
+            <Image Name="METitle_Wimbledon.png" />
+            <PlistInfo Name="PlistSceneMain.csi" Type="Plist" />
+          </Folder>
+          <Folder Name="Set">
+            <Image Name="btnVideoNormal.png" />
+            <Image Name="btnVideoPress.png" />
+            <PlistInfo Name="PlistSet.csi" Type="Plist" />
+            <Image Name="Set_TMusic.png" />
+            <Image Name="Set_TSound.png" />
+            <Image Name="SetBar.png" />
+            <Image Name="SetRect.png" />
+            <Image Name="SetSlider.png" />
+          </Folder>
+          <Folder Name="Shoe">
+            <Image Name="DressRoomShoe1.png" />
+            <Image Name="DressRoomShoe10.png" />
+            <Image Name="DressRoomShoe2.png" />
+            <Image Name="DressRoomShoe3.png" />
+            <Image Name="DressRoomShoe4.png" />
+            <Image Name="DressRoomShoe5.png" />
+            <Image Name="DressRoomShoe6.png" />
+            <Image Name="DressRoomShoe7.png" />
+            <Image Name="DressRoomShoe8.png" />
+            <Image Name="DressRoomShoe9.png" />
+            <PlistInfo Name="PlistDressRoomShoe.csi" Type="Plist" />
+            <Image Name="Shoe2.png" />
+          </Folder>
+          <Image Name="Banner.png" />
+        </Folder>
         <Folder Name="test">
           <Image Name="bg.png" />
           <Image Name="btnTemn.png" />
           <Image Name="imgES.png" />
         </Folder>
+        <Image Name="Background-Arena-0.png" />
         <Image Name="HelloWorld.png" />
         <Project Name="MainScene.csd" Type="Scene" />
+        <Image Name="Olympic-Vulture.png" />
+        <Project Name="SceneMain.csd" Type="Scene" />
         <Project Name="test.csd" Type="Layer" />
       </RootFolder>
     </Group>

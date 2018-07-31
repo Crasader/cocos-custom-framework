@@ -1,0 +1,2 @@
+文本内使用 [#ffffff] 颜色代码 修改局部文本颜色
+ "the text color is [#ff0000]red,[#00ff00]green,[#0000ff]blue,[#ffffff]restore the white";
