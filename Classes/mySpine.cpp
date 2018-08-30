@@ -28,6 +28,13 @@ mySpine::~mySpine()
 	slotAlphas.clear();
 	visualSlotAlphas.clear();
 	durations.clear();
+
+	for (auto item : useAttachment)
+	{
+		item.second.clear();
+	}
+
+	useAttachment.clear();
 }
 
 
@@ -79,7 +86,7 @@ void mySpine::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, 
 	for (int i = 0, n = _skeleton->slotsCount; i < n; ++i) {
 		spSlot* slot = _skeleton->drawOrder[i];
 		if (!slot->attachment) continue;
-
+		//CCLOG("the attachment -> %s", slot->attachment->name);
 		switch (slot->attachment->type) {
 		case SP_ATTACHMENT_REGION: {
 									   spRegionAttachment* attachment = (spRegionAttachment*)slot->attachment;
@@ -169,10 +176,24 @@ void mySpine::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, 
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		Texture2D* texture = nullptr;
-		if (useSkin.at(slot->data->name))
+
+		auto sprit = useSkin.find(slot->data->name);
+		if (sprit != useSkin.end())
 		{
-			texture = useSkin.at(slot->data->name)->getTexture();
+			texture = sprit->second->getTexture();
 		}
+
+		auto ruseAttachmentslot = useAttachment.find(slot->data->name);
+		if (ruseAttachmentslot != useAttachment.end()){
+			//slot->attachment
+			auto rmap = ruseAttachmentslot->second;
+			auto attachmentit = rmap.find(slot->attachment->name);
+			if (attachmentit != rmap.end()){
+				Sprite* sp = attachmentit->second;
+				texture = sp->getTexture();
+			}
+		}
+
 		if (texture)
 		{
 			switch (slot->attachment->type) {
@@ -225,22 +246,29 @@ void mySpine::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, 
 void mySpine::setSkinFileWithData(const std::string& slot, const std::string& file)
 {
 	Texture2D *texture = _director->getTextureCache()->addImage(file);
-
-	useSkin.insert(slot, Sprite::createWithTexture(texture));
+	CCASSERT(texture != nullptr, StringUtils::format("the %s is not exist", file.c_str()).c_str());
+	auto sprite = Sprite::createWithTexture(texture);
+	useSkin.insert(slot, sprite);
 }
 
 void mySpine::setSkinFile(const std::string& slot, const std::string& file)
 {
-	useSkin.insert(slot, Sprite::create(file));
+	auto sprite = Sprite::create(file);
+	CCASSERT(sprite != nullptr, StringUtils::format("the %s is not exist", file.c_str()).c_str());
+	useSkin.insert(slot, sprite);
 }
 
 void mySpine::setSkinFile(const std::string& slotName, Texture2D* rTexture2D)
 {
-	useSkin.insert(slotName, Sprite::createWithTexture(rTexture2D));
+	CCASSERT(rTexture2D != nullptr, StringUtils::format("the %s is not exist", rTexture2D->getPath().c_str()).c_str());
+	auto sprite = Sprite::createWithTexture(rTexture2D);
+	useSkin.insert(slotName, sprite);
 }
 
 void mySpine::setSkinFile(const std::string& slotName, Sprite* rSprite)
 {
+
+	CCASSERT(rSprite != nullptr, StringUtils::format("the %s is not exist", rSprite->getTexture()->getPath().c_str()).c_str());
 	useSkin.insert(slotName, rSprite);
 }
 
@@ -282,4 +310,130 @@ int mySpine::getSlotsCount()
 spSlot** mySpine::getSlots()
 {
 	return _skeleton->slots;
+}
+
+void mySpine::setCustomAttachment(const std::string& slotName, const std::string attachmentName, const std::string& filepath)
+{
+	auto sprite = Sprite::create(filepath);
+	if (useAttachment.find(slotName) != useAttachment.end()){
+	
+		useAttachment.at(slotName).insert(attachmentName, sprite);
+	}
+	else{
+		Map<std::string, Sprite*> rmap;
+		rmap.insert(attachmentName, sprite);
+		useAttachment.emplace(slotName, rmap);
+	}
+}
+
+
+void mySpine::removeSkinAlphas(const std::string& slotName)
+{
+	if (slotAlphas.find(slotName) != slotAlphas.end()){
+		slotAlphas.erase(slotName);
+	}
+	if (durations.find(slotName) != durations.end()){
+		durations.erase(slotName);
+	}
+	if (visualSlotAlphas.find(slotName) != visualSlotAlphas.end()){
+		visualSlotAlphas.erase(slotName);
+	}
+}
+
+void mySpine::removeCustomAttachment(const std::string& slotName, const std::string attachmentName)
+{
+	auto it = useAttachment.find(slotName);
+	if (it != useAttachment.end()){
+
+		auto attachmentit = it->second.find(attachmentName);
+		if (attachmentit != it->second.end()){
+			it->second.erase(attachmentit);
+		}
+	}
+	else{
+		CCLOG("can't find the [ %s ] attachment in [ %s ].", attachmentName.c_str(), slotName.c_str());
+	}
+}
+
+void mySpine::logSlots()
+{
+	for (int i = 0, n = _skeleton->slotsCount; i < n; ++i) {
+		spSlot* slot = _skeleton->slots[i];
+		CCLOG("the slot name -> %s ", slot->data->name);
+	}
+}
+void mySpine::logAttachments()
+{
+	std::map<std::string, std::vector<std::string>> spinestruct;
+
+	for (int i = 0, n = _skeleton->slotsCount; i < n; ++i) {
+		spSlot* slot = _skeleton->slots[i];
+		auto slotName = slot->data->name;
+		int slotIndex = spSkeletonData_findSlotIndex(_skeleton->data, slotName);
+
+		std::vector<std::string> strs;
+
+		if (_skeleton->skin) {
+			const _Entry* entry = SUB_CAST(_spSkin, _skeleton->skin)->entries;
+			while (entry) {
+				if (entry->slotIndex == slotIndex){
+					strs.push_back(entry->attachment->name);
+				}
+				entry = entry->next;
+
+			}
+
+			spinestruct[slotName] = strs;
+			continue;
+		}
+		if (_skeleton->data->defaultSkin) {
+			const _Entry* entry = SUB_CAST(_spSkin, _skeleton->data->defaultSkin)->entries;
+			while (entry) {
+				if (entry->slotIndex == slotIndex){
+					strs.push_back(entry->attachment->name);
+				}
+				entry = entry->next;
+			}
+			spinestruct[slotName] = strs;
+			continue;
+
+		}
+
+	}
+
+	CCLOG("logAttachment begin --------------");
+
+	int index = 0;
+	CCLOG("{");
+	for (auto item : spinestruct)
+	{
+		auto slotName = item.first;
+		auto atts = item.second;
+		CCLOG("\"%s\":[", slotName.c_str());
+		//CCLOG("\"attachments\":[");
+		for (int i = 0, n = atts.size(); i < n; i++)
+		{
+
+			if (i == n - 1){
+				CCLOG("\"%s\"", atts.at(i).c_str());
+			}
+			else{
+				CCLOG("\"%s\",", atts.at(i).c_str());
+			}
+		}
+		//CCLOG("]");
+
+		if (index == spinestruct.size() - 1){
+			CCLOG("]");
+		}
+		else{
+			CCLOG("],");
+		}
+
+		index++;
+	}
+	CCLOG("}");
+
+
+	CCLOG("logAttachment end --------------");
 }

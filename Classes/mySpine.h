@@ -35,9 +35,13 @@ public:
 	virtual void setSkinFile(const std::string& slotName, Sprite* rSprite);
 	virtual void setSkinFile(const std::string& slotName, Texture2D* rTexture2D);
 	virtual void setSkinAlphas(const std::string& slotName, float alpha, float duration = 0);//duration 是过渡时间
+
+	virtual void setCustomAttachment(const std::string& slotName, const std::string attachmentName,const std::string& filepath);
+	virtual void removeCustomAttachment(const std::string& slotName, const std::string attachmentName);
+
 	virtual void cleanCustomSkin();
 	virtual void removeCustomSkin(const std::string& slotName);
-
+	virtual void removeSkinAlphas(const std::string& slotName);
 
 	virtual map<string, float> getSlotAlphas(){ return slotAlphas; };
 
@@ -46,6 +50,8 @@ public:
 	spBone** getBones();
 	spSlot** getSlots();
 
+	virtual void logSlots();
+	virtual void logAttachments();
 protected:
 	virtual void copyTriangles(cocos2d::TrianglesCommand::Triangles* target, cocos2d::TrianglesCommand::Triangles* source);
 private:
@@ -55,6 +61,7 @@ private:
 	map<string, float> durations;
 	cocos2d::TrianglesCommand::Triangles* _pTriangles = nullptr;
 
+	std::map<std::string, Map<std::string, Sprite*>> useAttachment; // 一个附件一张图片
 };
 
 #endif // __mySpine_H__  

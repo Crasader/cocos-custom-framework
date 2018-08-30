@@ -1,18 +1,22 @@
 ﻿#ifndef __SPINEFACE_H__
 #define __SPINEFACE_H__
 #include "mySpine.h"
-#include "myGeometry.h"
+#include "StringUtil.h"
+#include "myExtension.h"
 
-typedef std::function<void(spTrackEntry* entry)> OnPlayOnceListener;
+
 class SpineFace :public mySpine
 {
+public:
+	typedef std::function<void(SpineFace* sp, spTrackEntry* entry)> OnPlayOnceListener;
 	typedef std::function<void(Ref*)> mySpineClickCallback;
 public:
 	SpineFace();
 	~SpineFace();
 	static SpineFace* create(const std::string &rSFileName, float scale = 1);
 	static SpineFace* createUseOwnData(const std::string &rSFileName, float scale = 1);
-	
+	static SpineFace* create(const std::string& skeletonDataFile, const std::string& atlasFile, float scale = 1);
+	static SpineFace* createWithData(spSkeletonData* skeletonData, bool ownsSkeletonData = false);
 	/**
 	 * the spine play key
 	 */
@@ -23,9 +27,9 @@ public:
 
 	virtual bool play(const std::string& name,float timescale = 1);
 
-	virtual float playOnce(const std::string& name, const OnPlayOnceListener& listener, float timescale = 1);
+	virtual float playOnce(const std::string& name, const SpineFace::OnPlayOnceListener& listener, float timescale = 1);
 
-	virtual float playRepeat(const std::string& name, int times, const OnPlayOnceListener& listener, float timescale = 1);
+	virtual float playRepeat(const std::string& name, int times, const SpineFace::OnPlayOnceListener& listener, float timescale = 1);
 
 	virtual bool isPlay(const std::string& name);
 
@@ -38,13 +42,16 @@ public:
 	virtual void setRandomAnims(std::vector<std::string> anims);
 	virtual std::vector<std::string> getAnims();
 	virtual std::string getRandomAnim();
-	virtual void playRandomAnim(int times = -1, OnPlayOnceListener listener = nullptr);
+	virtual void playRandomAnim(int times = -1, SpineFace::OnPlayOnceListener listener = nullptr);
 	virtual void allMix();
+	virtual void logAnims();
 
-	virtual c2d::Rectangle getRectangle();
+	virtual myExtension::Rectangle getRectangle();
 
 	virtual bool isTouchEnabled(){ return _touchEnabled; };
 	virtual void setTouchEnabled(bool enabled);
+
+	virtual void setSwallowTouches(bool swallow);
 
 	virtual bool onTouchBegan(Touch *touch, Event *unusedEvent);
 
@@ -70,6 +77,7 @@ protected:
 	std::unordered_map<std::string, int> _mRepeatTimes;
 	EventListenerTouchOneByOne* _touchListener = nullptr;
 	bool _touchEnabled = false;
+	bool _needSwallow = true;
 	mySpineClickCallback _clickEventListener;
 public:
 	static std::unordered_map< std::string, spSkeletonData*>  spSkeletonDataMap;

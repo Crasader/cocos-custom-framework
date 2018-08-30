@@ -1,7 +1,6 @@
 ﻿#include "SpineRect.h"
 #include <spine/extension.h>
-#include "PublicDefine.h"
-#include "StringUtil.h"
+
 
 
 SpineRect::SpineRect()
@@ -12,24 +11,7 @@ SpineRect::SpineRect()
 
 SpineRect::~SpineRect()
 {
-
-	auto iter = _mapBounds.begin();
-
-	while (iter != _mapBounds.end()) //#1
-	{
-		//注意要先释放内存，在删除map元素，顺序不能颠倒。
-		//释放内存
-		auto vec = iter->second;
-		vec->clear();
-
-		delete iter->second;
-
-		iter->second = NULL;
-
-		//删除map元素
-		_mapBounds.erase(iter++); //#1
-
-	}
+	
 }
 
 SpineRect* SpineRect::create(const std::string &rSFileName, float scale /*= 1*/)
@@ -48,6 +30,16 @@ SpineRect* SpineRect::create(const std::string &rSFileName, float scale /*= 1*/)
 	}
 }
 
+SpineRect* SpineRect::create(const std::string& skeletonDataFile, const std::string& atlasFile, float scale /*= 1*/)
+{
+	SpineRect *pRet = new(std::nothrow) SpineRect();
+	pRet->initWithJsonFile(skeletonDataFile, atlasFile, scale);
+	pRet->initData(atlasFile);
+	pRet->autorelease();
+
+	return pRet;
+}
+
 SpineRect* SpineRect::createUseOwnData(const std::string &rSFileName, float scale /*= 1*/)
 {
 	SpineRect *pRet = new(std::nothrow) SpineRect();
@@ -61,6 +53,15 @@ SpineRect* SpineRect::createUseOwnData(const std::string &rSFileName, float scal
 	pRet->autorelease();
 
 	return pRet;
+}
+
+SpineRect* SpineRect::createWithData(spSkeletonData* skeletonData, bool ownsSkeletonData /*= false*/)
+{
+	SpineRect* node = new(std::nothrow) SpineRect();
+	node->initWithData(skeletonData, ownsSkeletonData);
+	node->initData(skeletonData->defaultSkin->name);
+	node->autorelease();
+	return node;
 }
 
 
@@ -78,7 +79,6 @@ bool SpineRect::init(const std::string &rSFileName, float scale /*= 1*/)
 
 Rect SpineRect::getBoundingBox(std::vector<spSlot*>* slots /*= nullptr*/)
 {
-	this->update(0);//需要先更新骨骼
 	std::vector<spSlot*> _ownSlots;
 	if (slots == nullptr){
 		for (int i = 0; i < _skeleton->slotsCount; ++i) {
@@ -120,7 +120,7 @@ Rect SpineRect::getBoundingBox(std::vector<spSlot*>* slots /*= nullptr*/)
 	return Rect(position.x + minX, position.y + minY, maxX - minX, maxY - minY);
 }
 
-c2d::Rectangle SpineRect::getRectangle(Rect rBoundingBox /*= Rect::ZERO*/)
+myExtension::Rectangle SpineRect::getRectangle(Rect rBoundingBox /*= Rect::ZERO*/)
 {
 	Vec2 position = this->getPosition();
 	Rect box = rBoundingBox.equals(Rect::ZERO) ? this->getBoundingBox() : rBoundingBox;
@@ -129,7 +129,7 @@ c2d::Rectangle SpineRect::getRectangle(Rect rBoundingBox /*= Rect::ZERO*/)
 	float _maxx = box.size.width + _minx;
 	float _maxy = box.size.height + _miny;
 
-	c2d::Rectangle rectangle(_minx, _maxy, _maxx, _miny);
+	myExtension::Rectangle rectangle(_minx, _maxy, _maxx, _miny);
 	return rectangle;
 }
 
@@ -137,7 +137,7 @@ void SpineRect::drawDebugBox(std::vector<spSlot*>* slots /*= nullptr*/)
 {
 	this->update(0);//需要先更新骨骼
 	Rect rect = this->getBoundingBox(slots);
-	c2d::Rectangle rectangle = this->getRectangle(rect);
+	myExtension::Rectangle rectangle = this->getRectangle(rect);
 	auto drawnode = DrawNode::create();
 	Vec2 point[4];
 	point[0] = Vec2(rectangle.left, rectangle.bottom);
@@ -149,16 +149,16 @@ void SpineRect::drawDebugBox(std::vector<spSlot*>* slots /*= nullptr*/)
 	this->addChild(drawnode);
 }
 
-void SpineRect::setPostion(c2d::Align alignment, Vec2 pos, std::vector<spSlot*>* slots /*= nullptr*/)
+void SpineRect::setPostion(SpineRect::Align alignment,Vec2 pos, std::vector<spSlot*>* slots /*= nullptr*/)
 {
 	auto finalPos = calculatePosition(alignment, pos, slots);
 	this->setPosition(finalPos);
 }
 
-cocos2d::Vec2 SpineRect::calculatePosition(c2d::Align alignment, const Vec2& pos, std::vector<spSlot*>* slots /*= nullptr*/)
+cocos2d::Vec2 SpineRect::calculatePosition(SpineRect::Align alignment, const Vec2& pos, std::vector<spSlot*>* slots /*= nullptr*/)
 {
 	Rect partsBoundingbox = this->getBoundingBox(slots);
-	c2d::Rectangle partsRectangle = this->getRectangle(partsBoundingbox);
+	myExtension::Rectangle partsRectangle = this->getRectangle(partsBoundingbox);
 	Rect inNodePos = partsRectangle.toRect();
 	
 	float x = inNodePos.origin.x;
@@ -167,14 +167,14 @@ cocos2d::Vec2 SpineRect::calculatePosition(c2d::Align alignment, const Vec2& pos
 	float height = inNodePos.size.height;
 
 	
-	if (((int)alignment & (int)c2d::Align::right) != 0)
+	if (((int)alignment & (int)Align::right) != 0)
 		x += width;
-	else if (((int)alignment & (int)c2d::Align::left) == 0) //
+	else if (((int)alignment & (int)Align::left) == 0) //
 		x += width / 2;
 
-	if (((int)alignment & (int)c2d::Align::top) != 0)
+	if (((int)alignment & (int)Align::top) != 0)
 		y += height;
-	else if (((int)alignment & (int)c2d::Align::bottom) == 0) //
+	else if (((int)alignment & (int)Align::bottom) == 0) //
 		y += height / 2;
 
 
@@ -195,10 +195,10 @@ void SpineRect::addBoundNodeWithBone(const std::string &boneName, Node* node)
 		nodes = new Vector<Node*>();
 		_mapBounds.emplace(bone, nodes);
 	}
-	
-	nodes->pushBack(node);
-	this->addChild(node);
 
+	nodes->pushBack(node);
+	if (node->getParent() == this)return;
+	this->addChild(node);
 
 }
 void SpineRect::removeBoundNode(Node* node, bool removeFromParent /*= true*/)
@@ -245,6 +245,20 @@ void SpineRect::removeBoundNode(const std::string & nodeName, bool removeFromPar
 void SpineRect::removeBoundNode(const std::string & boneName, const std::string & nodeName, bool removeFromParent /*= true*/)
 {
 	auto bone = this->findBone(boneName);
+	auto node = findBoneBoundNode(boneName, nodeName);
+
+	if (_mapBounds.find(bone) != _mapBounds.end()){
+		Vector<Node*>* nodes = _mapBounds.at(bone);
+		if (removeFromParent){
+			node->removeFromParent();
+		}
+		nodes->eraseObject(node);
+	}
+}
+
+Node* SpineRect::findBoneBoundNode(const std::string & boneName, const std::string & nodeName )
+{
+	auto bone = this->findBone(boneName);
 	Vector<Node*>* nodes = nullptr;
 	if (_mapBounds.find(bone) != _mapBounds.end()){
 		nodes = _mapBounds.at(bone);
@@ -253,15 +267,12 @@ void SpineRect::removeBoundNode(const std::string & boneName, const std::string 
 		{
 			auto node = *it;
 			if (node->getName() == nodeName){
-				if (removeFromParent){
-					node->removeFromParent();
-				}
-				nodes->eraseObject(node);
-				break;
+				return node;
 			}
 		}
-		
 	}
+
+	return nullptr;
 }
 
 
@@ -272,7 +283,7 @@ void SpineRect::update(float deltaTime)
 	{
 		auto bone = item.first;
 		auto vec = item.second;
-		for (auto it = vec->begin(); it != vec->end();it++)
+		for (auto it = vec->begin(); it != vec->end(); it++)
 		{
 			auto node = *it;
 			node->setPosition(Vec2(bone->worldX, bone->worldY));

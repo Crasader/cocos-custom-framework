@@ -1,7 +1,7 @@
 ﻿#ifndef __CSAsyncLoader__
 #define __CSAsyncLoader__
 
-#include "PublicCoco.h"
+#include "../PublicCoco.h"
 
 namespace flatbuffers
 {

@@ -85,8 +85,8 @@ bool CSAsyncLoader::addCsb(const std::string& filename)
 
 void CSAsyncLoader::load(std::function<void(float)> progressCallBack)
 {
-	CSAsyncLoader* load = CSAsyncLoader::getInstance();
-	load->loadAsync(progressCallBack);
+	CSAsyncLoader* cloader = CSAsyncLoader::getInstance();
+	cloader->loadAsync(progressCallBack);
 }
 
 bool CSAsyncLoader::add(const std::string& fileName)

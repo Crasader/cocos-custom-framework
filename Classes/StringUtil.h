@@ -29,6 +29,7 @@ namespace StringUtil {
 	
 
 	std::vector<std::string> split(const std::string & str, const std::string & separator);
+	int charCount(const std::string & str, const std::string & separator);
 	std::vector<std::string>getLines(const std::string &content);
 	std::string nameWithoutExtension(const std::string & str);
 	std::string pathWithoutExtension(const std::string & str);
@@ -48,12 +49,22 @@ namespace StringUtil {
 	std::string toString(const Vec2& vec);
 	std::string toString(const Vec3& vec);
 	std::string toString(const Rect& rect);
-	
+
+	//格式化成货币，每3位 加一个逗号： 2,100,000.00
+	std::string format2currency(float val);
+	std::string format2currency(int val);
+	std::string format2currency(const std::string& str);
 
 	std::string toLowerCase(const std::string& str);//
 	std::string toUpperCase(const std::string& str);
 
 	void writeStringAddToFile(const std::string& filename, const std::string& wr_str, bool newLine = true);
+
+	//输入格式为 00:00:00 输出 为 秒
+	int time2sec(const std::string& time);
+
+	std::string timeFormat(int time, const std::string& format = "%02d:%02d:%02d");
+
 
 	std::string getLocalRes(const std::string&filename);
 	//读取文件中存储的文件名
@@ -65,6 +76,8 @@ namespace StringUtil {
 	* key2=value2
 	*/
 	std::map<std::string, std::string> loadProperties(const std::string &fullpath);
+
+	bool writeProperties(const std::string &fullpath, const std::map<std::string, std::string>& contentStr);
 } // namespace StringUtils {
 
 // end of data_structure group

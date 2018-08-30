@@ -138,6 +138,9 @@
     <ClCompile Include="..\Classes\SceneLoading.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\SceneMenu.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -267,6 +270,9 @@
       <Filter>src\kit\2d</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SceneLoading.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SceneMenu.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

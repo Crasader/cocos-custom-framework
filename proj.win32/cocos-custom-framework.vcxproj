@@ -175,6 +175,7 @@ xcopy /Y /Q "$(COCOS_X_ROOT)\cocos2d-x-3.15\prebuilt\win32\*.*" "$(OutDir)"
     <ClCompile Include="..\Classes\PicProcessing.cpp" />
     <ClCompile Include="..\Classes\SceneLoading.cpp" />
     <ClCompile Include="..\Classes\SceneManager.cpp" />
+    <ClCompile Include="..\Classes\SceneMenu.cpp" />
     <ClCompile Include="..\Classes\SpineFace.cpp" />
     <ClCompile Include="..\Classes\SpineRect.cpp" />
     <ClCompile Include="..\Classes\StringUtil.cpp" />
@@ -219,6 +220,7 @@ xcopy /Y /Q "$(COCOS_X_ROOT)\cocos2d-x-3.15\prebuilt\win32\*.*" "$(OutDir)"
     <ClInclude Include="..\Classes\PublicHead.h" />
     <ClInclude Include="..\Classes\SceneLoading.h" />
     <ClInclude Include="..\Classes\SceneManager.h" />
+    <ClInclude Include="..\Classes\SceneMenu.h" />
     <ClInclude Include="..\Classes\SceneType.h" />
     <ClInclude Include="..\Classes\SpineFace.h" />
     <ClInclude Include="..\Classes\SpineRect.h" />

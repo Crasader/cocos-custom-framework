@@ -1,21 +1,20 @@
 ﻿#include "SpineFace.h"
 #include <spine/extension.h>
-#include "PublicDefine.h"
-#include "StringUtil.h"
+
 
 //spine data ---- 缓存
 std::unordered_map< std::string, spSkeletonData*> SpineFace::spSkeletonDataMap;
 
 spSkeletonData* SpineFace::create_spSkeletonData_WithFile(const std::string& skeletonDataFile, float scale /*= 1*/)
 {
-
+	CCLOG("create_spSkeletonData_WithFile -> %s", skeletonDataFile.c_str());
 	auto filename = StringUtil::pathWithoutExtension(skeletonDataFile);
 	bool isExist = (spSkeletonDataMap.find(filename) != spSkeletonDataMap.end());//判断map里面是否存在 key  skeletonDataFile
 	std::string atlasFile = filename + ".atlas";
 	std::string jsonFile = filename + ".json";
 
 	spSkeletonData * skeletonData = nullptr;
-
+	
 	if (isExist){
 		skeletonData = spSkeletonDataMap.at(filename);
 		log("skeletonData exist");
@@ -66,6 +65,16 @@ SpineFace* SpineFace::create(const std::string &rSFileName, float scale /*= 1*/)
 	}
 }
 
+SpineFace* SpineFace::create(const std::string& skeletonDataFile, const std::string& atlasFile, float scale /*= 1*/)
+{
+	SpineFace *pRet = new(std::nothrow) SpineFace();
+	pRet->initWithJsonFile(skeletonDataFile, atlasFile, scale);
+	pRet->initData(atlasFile);
+	pRet->autorelease();
+
+	return pRet;
+}
+
 SpineFace* SpineFace::createUseOwnData(const std::string &rSFileName, float scale /*= 1*/)
 {
 	SpineFace *pRet = new(std::nothrow) SpineFace();
@@ -79,6 +88,15 @@ SpineFace* SpineFace::createUseOwnData(const std::string &rSFileName, float scal
 	pRet->autorelease();
 
 	return pRet;
+}
+
+SpineFace* SpineFace::createWithData(spSkeletonData* skeletonData, bool ownsSkeletonData /*= false*/)
+{
+	SpineFace* node = new(std::nothrow) SpineFace();
+	node->initWithData(skeletonData, ownsSkeletonData);
+	node->initData(skeletonData->defaultSkin->name);
+	node->autorelease();
+	return node;
 }
 
 
@@ -131,7 +149,6 @@ void SpineFace::setMixFro(const std::string& fromAnimation, const std::string& t
 
 void SpineFace::stopAnim()
 {
-	//setEmptyAnimation
 	_sPlayKey = "";
 	spAnimationState_setEmptyAnimation(_state,0,0);
 	update(0);
@@ -139,7 +156,6 @@ void SpineFace::stopAnim()
 
 bool SpineFace::play(const std::string& name, float timescale /*= 1*/)
 {
-	DELOG(__FILE__, __LINE__, "play [ %s ] animation loop", name.c_str());
 	setTimeScale(timescale);
 	setAnimation(0, name, true);
 	_sPlayKey = name;
@@ -147,16 +163,25 @@ bool SpineFace::play(const std::string& name, float timescale /*= 1*/)
 	return true;
 }
 
-float SpineFace::playOnce(const std::string& name, const OnPlayOnceListener& listener, float timescale /*= 1*/)
+float SpineFace::playOnce(const std::string& name, const SpineFace::OnPlayOnceListener& listener, float timescale /*= 1*/)
 {
+	
 	return playRepeat(name, 1, listener, timescale);
 }
 
-float SpineFace::playRepeat(const std::string& name, int times, const OnPlayOnceListener& listener, float timescale /*= 1*/)
+float SpineFace::playRepeat(const std::string& name, int times, const SpineFace::OnPlayOnceListener& listener, float timescale /*= 1*/)
 {
 	_bIsPlaying = true;
 	setTimeScale(timescale);
-	spTrackEntry* trackEntry = setAnimation(0, name, true);
+	spTrackEntry* trackEntry = setAnimation(0, name, times == 1 ? false : true);
+
+	if (trackEntry == nullptr){
+		if (listener){
+			listener(this,nullptr);
+		}
+		return 0;
+	}
+
 	if (_mRepeatTimes.find(name) != _mRepeatTimes.end()){
 		_mRepeatTimes.at(name) = 0;
 	}
@@ -166,12 +191,11 @@ float SpineFace::playRepeat(const std::string& name, int times, const OnPlayOnce
 	setTrackCompleteListener(trackEntry, [=](spTrackEntry* entry){
 		 
  		_mRepeatTimes.at(name)++;
-// 		DELOG(__FILE__, __LINE__, "anim name : %s loopCount:%d", name.c_str(), _mRepeatTimes.at(name));
  		bool isBigger = _mRepeatTimes.at(name) >= times;
  		if (isBigger){
 			_bIsPlaying = false;
  			if (listener){
- 				listener(entry);
+ 				listener(this,entry);
  			}
  		}
 	});
@@ -228,10 +252,20 @@ bool SpineFace::getFlipY()
 		for (int i = 0; i < data->animationsCount; i++)
 		{
 		 anims.push_back(data->animations[i]->name);
-		 CCLOG("the anim name is -> %s", data->animations[i]->name);
 		}
 	}
 	return anims;
+ }
+
+ void SpineFace::logAnims()
+ {
+	 std::vector<std::string> anims = getAnims();
+
+	 for (int i = 0; i < anims.size();i++)
+	 {
+		 auto item = anims.at(i);
+		 CCLOG("count %d the anim -> %s",i, item.c_str());
+	 }
  }
 
  void SpineFace::setRandomAnims(std::vector<std::string> anims)
@@ -251,17 +285,16 @@ std::string SpineFace::getRandomAnim()
 
 	auto name = _sPlayKey;
 
-	while (name == _sPlayKey && size > 1)//不让随机到跟当前播放的动画一样的动画
+	while (name == _sPlayKey && size >= 1)//不让随机到跟当前播放的动画一样的动画
 	{
 		int index = random(0,(int) size - 1);
 		name = temp.at(index);
 	}
-	CCLOG("the random anim name is -> %s",name.c_str());
 	return name;
 
 }
 
-void SpineFace::playRandomAnim(int times /*= -1*/, OnPlayOnceListener listener /*= nullptr*/)
+void SpineFace::playRandomAnim(int times /*= -1*/, SpineFace::OnPlayOnceListener listener /*= nullptr*/)
 {
 	auto anim = getRandomAnim();
 	if (times <= 0){
@@ -272,6 +305,14 @@ void SpineFace::playRandomAnim(int times /*= -1*/, OnPlayOnceListener listener /
 	}
 }
 
+
+void SpineFace::setSwallowTouches(bool swallow)
+{
+	_needSwallow = swallow;
+	if (_touchListener){
+		_touchListener->setSwallowTouches(swallow);
+	}
+}
 
 void SpineFace::setTouchEnabled(bool enabled)
 {
@@ -284,7 +325,7 @@ void SpineFace::setTouchEnabled(bool enabled)
 	{
 		_touchListener = EventListenerTouchOneByOne::create();
 		CC_SAFE_RETAIN(_touchListener);
-		_touchListener->setSwallowTouches(true);
+		_touchListener->setSwallowTouches(_needSwallow);
 		_touchListener->onTouchBegan = CC_CALLBACK_2(SpineFace::onTouchBegan, this);
 		_touchListener->onTouchMoved = CC_CALLBACK_2(SpineFace::onTouchMoved, this);
 		_touchListener->onTouchEnded = CC_CALLBACK_2(SpineFace::onTouchEnded, this);
@@ -343,7 +384,7 @@ bool SpineFace::isInBoundingBox(Point point)
 	return false;
 }
 
-c2d::Rectangle SpineFace::getRectangle()
+myExtension::Rectangle SpineFace::getRectangle()
 {
 	Vec2 position = this->getPosition();
 	Rect box = this->getBoundingBox();
@@ -353,6 +394,6 @@ c2d::Rectangle SpineFace::getRectangle()
 	float _maxy = box.size.height + _miny;
 
 	
-	c2d::Rectangle rectangle(_minx, _maxy, _maxx, _miny);
+	myExtension::Rectangle rectangle(_minx, _maxy, _maxx, _miny);
 	return rectangle;
 }

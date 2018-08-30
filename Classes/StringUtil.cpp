@@ -30,6 +30,30 @@ namespace StringUtil {
 		return result;
 	}
 
+	int charCount(const std::string & _str, const std::string & separator)
+	{
+		std::string str = _str;
+		//std::vector<std::string> result;
+		int cutAt;
+		int rcount = 0;
+		while ((cutAt = str.find_first_of(separator)) != str.npos)
+		{
+			if (cutAt > 0)
+			{
+				//result.push_back(str.substr(0, cutAt));
+				rcount++;
+			}
+			str = str.substr(cutAt + 1);
+		}
+		if (str.length() > 0)
+		{
+			//result.push_back(str);
+			rcount++;
+		}
+
+		return rcount;
+	}
+
 	std::vector<std::string> getLines(const std::string &content)
 	{
 		std::vector<std::string> rows;
@@ -255,14 +279,27 @@ namespace StringUtil {
 		auto path = getFolderPath(fullpath);
 		if (FileUtils::getInstance()->isFileExist(fullpath)){
 			auto fileContent = FileUtils::getInstance()->getStringFromFile(fullpath);
-			auto _sTexts = StringUtil::getLines(fileContent);
+			
 
-
-			for (auto item : _sTexts)
-			{
-				auto tem = path + "/" + item;
+			//逐行读取文件
+			char rowSeperator = '\n';
+			std::string::size_type lastIndex = fileContent.find_first_not_of(rowSeperator, 0);
+			std::string::size_type currentIndex = fileContent.find_first_of(rowSeperator, lastIndex);
+			
+			while (std::string::npos != currentIndex || std::string::npos != lastIndex) {
+				std::string str = fileContent.substr(lastIndex, currentIndex - lastIndex - 1);
+				lastIndex = fileContent.find_first_not_of(rowSeperator, currentIndex);
+				currentIndex = fileContent.find_first_of(rowSeperator, lastIndex);
+				auto tem = path + "/" + str;
 				val.push_back(tem);
 			}
+
+// 			auto _sTexts = StringUtil::getLines(fileContent);
+// 			for (auto item : _sTexts)
+// 			{
+// 				auto tem = path + "/" + item;
+// 				val.push_back(tem);
+// 			}
 		}
 		return val;
 	}
@@ -272,21 +309,111 @@ namespace StringUtil {
 		std::map<std::string, std::string> _map;
 		if (FileUtils::getInstance()->isFileExist(fullpath)){
 			auto fileContent = FileUtils::getInstance()->getStringFromFile(fullpath);
-			auto _sTexts = StringUtil::getLines(fileContent);
+			//逐行读取文件
+			char rowSeperator = '\n';
+			std::string::size_type lastIndex = fileContent.find_first_not_of(rowSeperator, 0);
+			std::string::size_type currentIndex = fileContent.find_first_of(rowSeperator, lastIndex);
 
-			for (auto item : _sTexts)
-			{
-				size_t nPos = item.find('=');
+			while (std::string::npos != currentIndex || std::string::npos != lastIndex) {
+				std::string str = fileContent.substr(lastIndex, currentIndex - lastIndex - 1);
+				lastIndex = fileContent.find_first_not_of(rowSeperator, currentIndex);
+				currentIndex = fileContent.find_first_of(rowSeperator, lastIndex);
+
+				size_t nPos = str.find('=');
 				if (nPos == std::string::npos){
 					continue;
 				}
-				std::string key = item.substr(0, nPos);
-				std::string value = item.substr(nPos + 1, item.size() - 1);
+				std::string key = str.substr(0, nPos);
+				std::string value = str.substr(nPos + 1, str.size() - 1);
 				_map.emplace(key, value);
 			}
+
+// 			auto _sTexts = StringUtil::getLines(fileContent);
+// 
+// 			for (auto item : _sTexts)
+// 			{
+// 				size_t nPos = item.find('=');
+// 				if (nPos == std::string::npos){
+// 					continue;
+// 				}
+// 				std::string key = item.substr(0, nPos);
+// 				std::string value = item.substr(nPos + 1, item.size() - 1);
+// 				_map.emplace(key, value);
+// 			}
 		}
 
 		return _map;
+	}
+
+	bool writeProperties(const std::string &fullpath, const std::map<std::string, std::string>& contentStr)
+	{
+
+		std::string str;
+		for (auto item : contentStr)
+		{
+			str += item.first;
+			str += "=";
+			str += item.second;
+			str += "\n";
+		}
+		str = str.substr(0, str.length() - 1);
+		if (FileUtils::getInstance()->writeStringToFile(str, fullpath.c_str()))
+		{
+			log("see the log at %s", fullpath.c_str());
+
+		}
+
+		return true;
+	}
+
+	std::string format2currency(int val)
+	{
+		std::string str = StringUtils::format("%d", val);
+		return format2currency(str);
+	}
+
+	std::string format2currency(float val)
+	{
+		std::string str = StringUtils::format("%.02f", val);
+		return format2currency(str);
+	}
+
+	std::string format2currency(const std::string& val)
+	{
+		std::string str = val;
+		size_t len = str.length();
+		int m = str.find(".");
+		if (m == -1)m = len;
+		for (int index = (int)len - 3 - (len - m); index > 0; index -= 3){
+			str.insert(index, ",");//插入逗号。
+		}
+		return str;
+	}
+
+	int time2sec(const std::string& time)
+	{
+		auto times = split(time, ":");
+
+		if (times.size() <= 1)return atoi(time.c_str());
+
+		auto hour2sec = atoi(times.at(0).c_str()) * 60 * 60;
+
+		auto min2sec = atoi(times.at(1).c_str()) * 60;
+
+		auto sec = atoi(times.at(2).c_str());
+
+		auto total = hour2sec + min2sec + sec;
+
+		return total;
+	}
+
+	std::string timeFormat(int time, const std::string& format /*= "%02d:%02d:%02d"*/)
+	{
+		if (time < 0)
+		{
+			return StringUtils::format(format.c_str(), 0, 0, 0);
+		}
+		return StringUtils::format(format.c_str(), time / 3600, time % 3600 / 60, time % 60);
 	}
 
 } // namespace StringUtils {
