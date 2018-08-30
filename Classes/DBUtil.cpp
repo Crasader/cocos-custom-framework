@@ -134,7 +134,8 @@ void DBUtil::insertDatabatch(string sql, ValueVector datavec)
 				sqlite3_bind_double(stmt, j + 1, nvalue.asDouble());
 				break;
 			case cocos2d::Value::Type::STRING:
-				sqlite3_bind_text(stmt, j + 1, nvalue.asString().c_str(), nvalue.asString().size(), SQLITE_STATIC);
+				//sqlite3_bind_text(stmt, j + 1, nvalue.asString().c_str(), nvalue.asString().size(), SQLITE_STATIC);
+				sqlite3_bind_text(stmt, j + 1, nvalue.asString().c_str(), -1, SQLITE_TRANSIENT);
 				
 				break;
 			}
